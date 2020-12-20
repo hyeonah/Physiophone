@@ -25,22 +25,9 @@ class App(tkinter.Tk):
         ##os.chdir(pathname)
         error_flag = 0
         
-        tkinter.Tk.__init__(self)
-        self.configure(background='black')
-        self.title("Physiophone 0.1")
-        self.minsize(544,804)
-        self.configure(bg = 'black')
-        self.gui_init = Image.open("./image/GUI.png")
-        self.gui_init = self.gui_init.resize((544,804))
-        self.gui = Image.open("./image/GUI.png")
-        self.gui = self.gui.resize((544,804))
-        self.gui_mock = Image.open("./image/GUI-mock.png")
-        self.gui_mock = self.gui_mock.resize((544,804))
+        self.init_GUI()
         
-        self.canvas = Canvas(self, width=544, height=804)
-        self.canvas.bind('<Key>', self.key)
-        self.canvas.bind('<Button-1>', self.callback)
-        self.canvas.pack()
+        
 
         self.RT_Params = {
             "Synth" : ["sim","pinknoise"],
@@ -66,6 +53,8 @@ class App(tkinter.Tk):
             "softecg" : True,
             "hardecg" : True,
             "manual" : True,
+            "mouse_x" : 0,
+            "mouse_y" : 0,
             
             "headbox" : [(479,19,533,71),(481,87,531,137)]
         }
@@ -119,9 +108,153 @@ class App(tkinter.Tk):
     def key(self, event):
         print ("pressed", repr(event.char))
         
-    def guiInit(self) :
+    def init_GUI(self) :
+    
+        tkinter.Tk.__init__(self)
+        self.configure(background='black')
+        self.title("Physiophone 0.1")
+        self.minsize(544,804)
+        self.configure(bg = 'black')
+        self.gui_init = Image.open("./image/GUI.png")
+        self.gui_init = self.gui_init.resize((544,804))
         self.gui = Image.open("./image/GUI.png")
         self.gui = self.gui.resize((544,804))
+        self.gui_mock = Image.open("./image/GUI-mock.png")
+        self.gui_mock = self.gui_mock.resize((544,804))
+        
+        self.canvas = Canvas(self, width=544, height=804)
+        self.canvas.bind('<Key>', self.key)
+        self.canvas.bind('<Button-1>', self.callback)
+        self.canvas.pack()
+        
+    def update_GUI(self) :
+    
+        mouse_x = self.RT_Params["mouse_x"]
+        mouse_y = self.RT_Params["mouse_y"]
+    
+        #boot
+        if (479 <= mouse_x <= 516 and 22 <= mouse_y <= 70):
+            if (self.RT_Params["boot"]) :
+                self.RT_Params["boot"] = False
+            else :
+                self.RT_Params["boot"] = True
+                       
+        #record
+        if (481 <= mouse_x <= 531 and 87 <= mouse_y <= 137):
+            if (self.RT_Params["record"]) :
+                self.RT_Params["record"] = False
+            else :
+                self.RT_Params["record"] = True
+                
+        #Flip
+        if( 183 <= mouse_x <= 233 and 22 <= mouse_y <=72):
+            if (self.RT_Params["flip"]) :
+                self.RT_Params["flip"] = False
+            else :
+                self.RT_Params["flip"] = True
+
+        #energy
+        if( 183 <= mouse_x <= 233 and 88 <= mouse_y <= 137):
+            if (self.RT_Params["energy"]) :
+                self.RT_Params["energy"] = False
+            else :
+                self.RT_Params["energy"] = True
+        
+        #Sinusoidal
+        if( 256 <= mouse_x <= 388 and 44 <= mouse_y <= 75):
+            if (self.RT_Params["sinusoidal"]) :
+                self.RT_Params["sinusoidal"] = False
+            else :
+                self.RT_Params["sinusoidal"] = True
+
+        #Pink Noise
+        if( 257 <= mouse_x <= 386 and 92 <= mouse_y <= 125):
+            if (self.RT_Params["pinknoise"]) :
+                self.RT_Params["pinknoise"] = False
+            else :
+                self.RT_Params["pinknoise"] = True
+        
+        #Delta
+        if( 26 <= mouse_x <= 66 and 173 <= mouse_y <= 249):
+            if (self.RT_Params["delta"]) :
+                self.RT_Params["delta"] = False
+            else :
+                self.RT_Params["delta"] = True
+ 
+        #Alpha
+        if( 80 <= mouse_x <= 128 and 173 <= mouse_y <= 245):
+            if (self.RT_Params["alpha"]) :
+                self.RT_Params["alpha"] = False
+            else :
+                self.RT_Params["alpha"] = True
+ 
+        #Beta
+        if( 137 <= mouse_x <= 180 and 173 <= mouse_y <= 245):
+            if (self.RT_Params["beta"]) :
+                self.RT_Params["beta"] = False
+            else :
+                self.RT_Params["beta"] = True
+ 
+        #Gamma
+        if( 190 <= mouse_x <= 238 and 173 <= mouse_y <= 245):
+            if (self.RT_Params["gamma"]) :
+                self.RT_Params["gamma"] = False
+            else :
+                self.RT_Params["gamma"] = True
+
+        #EGG
+        if( 252 <= mouse_x <= 293 and 173 <= mouse_y <= 245):
+            if (self.RT_Params["egg"]) :
+                self.RT_Params["egg"] = False
+            else :
+                self.RT_Params["egg"] = True
+                
+        #EMG
+        if( 308 <= mouse_x <= 347 and 173 <= mouse_y <= 245):
+            if (self.RT_Params["emg"]) :
+                self.RT_Params["emg"] = False
+            else :
+                self.RT_Params["emg"] = True
+                
+        #Soft ECG
+        if( 362 <= mouse_x <= 408 and 172 <= mouse_y <= 245):
+            if (self.RT_Params["softecg"]) :
+                self.RT_Params["softecg"] = False
+            else :
+                self.RT_Params["softecg"] = True
+
+        #Hard ECG
+        if( 418 <= mouse_x <= 466 and 173 <= mouse_y <= 245):
+            if (self.RT_Params["hardecg"]) :
+                self.RT_Params["hardecg"] = False
+            else :
+                self.RT_Params["hardecg"] = True
+
+        #Manual
+        if( 481 <= mouse_x <= 521 and 173 <= mouse_y <= 245):
+            if (self.RT_Params["manual"]) :
+                self.RT_Params["manual"] = False
+            else :
+                self.RT_Params["manual"] = True
+                
+        self.updateBoot()
+        self.updateRecord()
+        self.updateFlip()
+        self.updateEnergy()
+        self.updateSinusoidal()
+        self.updatePinknoise()
+        self.updateHardECG()
+        self.updateDelta()
+        self.updateAlpha()
+        self.updateBeta()
+        self.updateGamma()
+        self.updateEGG()
+        self.updateEMG()
+        self.updateSoftECG()
+        self.updateManual()
+        
+        self.gui = ImageTk.PhotoImage(self.gui)
+        self.canvas.create_image(544,804, anchor= tkinter.SE, image=self.gui)
         
     def updateBoot(self) :
         headbox = (479,19,533,71)
@@ -272,138 +405,36 @@ class App(tkinter.Tk):
             self.gui_mock_crop = Image.open("./image/hardecg_on.png")
             self.gui.paste(self.gui_mock_crop, (496,241))
         self.gui.save("./image/updateGUI.png")
+        
+    def start(self):
+        
+        try :
+            self.update_GUI()
+            #self.start_board()
+            #self.start_audio()
+            #self.modulate()
+        except :
+            self.stop()
+
+    def stop(self) :
+        
+        self.stop_board()
+        self.stop_audio()
+        self.stop_modulation()
+        
+        
 
     def callback(self, event):
     
-        #GUI init function
-        self.guiInit()
-         
-        #boot
-        if (479 <= event.x <= 516 and 22 <= event.y <= 70):
-            if (self.RT_Params["boot"]) :
-                self.RT_Params["boot"] = False
-            else :
-                self.RT_Params["boot"] = True
-                       
-        #record
-        if (481 <= event.x <= 531 and 87 <= event.y <= 137):
-            if (self.RT_Params["record"]) :
-                self.RT_Params["record"] = False
-            else :
-                self.RT_Params["record"] = True
-                
-        #Flip
-        if( 183 <= event.x <= 233 and 22 <= event.y <=72):
-            if (self.RT_Params["flip"]) :
-                self.RT_Params["flip"] = False
-            else :
-                self.RT_Params["flip"] = True
-
-        #energy
-        if( 183 <= event.x <= 233 and 88 <= event.y <= 137):
-            if (self.RT_Params["energy"]) :
-                self.RT_Params["energy"] = False
-            else :
-                self.RT_Params["energy"] = True
+        self.gui = Image.open("./image/GUI.png")
+        self.gui = self.gui.resize((544,804))
+        self.RT_Params["mouse_x"] = event.x
+        self.RT_Params["mouse_y"] = event.y
         
-        #Sinusoidal
-        if( 256 <= event.x <= 388 and 44 <= event.y <= 75):
-            if (self.RT_Params["sinusoidal"]) :
-                self.RT_Params["sinusoidal"] = False
-            else :
-                self.RT_Params["sinusoidal"] = True
-
-        #Pink Noise
-        if( 257 <= event.x <= 386 and 92 <= event.y <= 125):
-            if (self.RT_Params["pinknoise"]) :
-                self.RT_Params["pinknoise"] = False
-            else :
-                self.RT_Params["pinknoise"] = True
-        
-        #Delta
-        if( 26 <= event.x <= 66 and 173 <= event.y <= 249):
-            if (self.RT_Params["delta"]) :
-                self.RT_Params["delta"] = False
-            else :
-                self.RT_Params["delta"] = True
- 
-        #Alpha
-        if( 80 <= event.x <= 128 and 173 <= event.y <= 245):
-            if (self.RT_Params["alpha"]) :
-                self.RT_Params["alpha"] = False
-            else :
-                self.RT_Params["alpha"] = True
- 
-        #Beta
-        if( 137 <= event.x <= 180 and 173 <= event.y <= 245):
-            if (self.RT_Params["beta"]) :
-                self.RT_Params["beta"] = False
-            else :
-                self.RT_Params["beta"] = True
- 
-        #Gamma
-        if( 190 <= event.x <= 238 and 173 <= event.y <= 245):
-            if (self.RT_Params["gamma"]) :
-                self.RT_Params["gamma"] = False
-            else :
-                self.RT_Params["gamma"] = True
-
-        #EGG
-        if( 252 <= event.x <= 293 and 173 <= event.y <= 245):
-            if (self.RT_Params["egg"]) :
-                self.RT_Params["egg"] = False
-            else :
-                self.RT_Params["egg"] = True
-                
-        #EMG
-        if( 308 <= event.x <= 347 and 173 <= event.y <= 245):
-            if (self.RT_Params["emg"]) :
-                self.RT_Params["emg"] = False
-            else :
-                self.RT_Params["emg"] = True
-                
-        #Soft ECG
-        if( 362 <= event.x <= 408 and 172 <= event.y <= 245):
-            if (self.RT_Params["softecg"]) :
-                self.RT_Params["softecg"] = False
-            else :
-                self.RT_Params["softecg"] = True
-
-        #Hard ECG
-        if( 418 <= event.x <= 466 and 173 <= event.y <= 245):
-            if (self.RT_Params["hardecg"]) :
-                self.RT_Params["hardecg"] = False
-            else :
-                self.RT_Params["hardecg"] = True
-
-        #Manual
-        if( 481 <= event.x <= 521 and 173 <= event.y <= 245):
-            if (self.RT_Params["manual"]) :
-                self.RT_Params["manual"] = False
-            else :
-                self.RT_Params["manual"] = True
-                
-        self.updateBoot()
-        self.updateRecord()
-        self.updateFlip()
-        self.updateEnergy()
-        self.updateSinusoidal()
-        self.updatePinknoise()
-        self.updateHardECG()
-        self.updateDelta()
-        self.updateAlpha()
-        self.updateBeta()
-        self.updateGamma()
-        self.updateEGG()
-        self.updateEMG()
-        self.updateSoftECG()
-        self.updateManual()
-        
-        self.gui = ImageTk.PhotoImage(self.gui)
-        self.canvas.create_image(544,804, anchor= tkinter.SE, image=self.gui)
-                
+        self.update_GUI()
         
         print ("clicked at", event.x, event.y)
+       
         
     def move_window(self,event):
         global img
