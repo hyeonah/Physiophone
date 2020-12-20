@@ -53,20 +53,11 @@ class App(tkinter.Tk):
             "manual" : True,
             "mouse_x" : 0,
             "mouse_y" : 0,
-            
-            "headbox" : [(479,19,533,71),(481,87,531,137)]
         }
         
         
         #sttk.Scrollbar(self).grid(row =1, column = 1)
-        
-        
-        
-        #body = Image.open("GUI.png")
-        self.head = Image.open("./image/GUI-mock.png")
-        #body = self.img.resize((544,804))
-        self.head = self.head.resize((544,804))
-        
+                
         self.gui_init = ImageTk.PhotoImage(self.gui_init)
         self.canvas.create_image(544,804, anchor= tkinter.SE, image=self.gui_init)
         self.canvas.pack()
@@ -386,6 +377,7 @@ class App(tkinter.Tk):
             self.gui_mock_crop = Image.open("./image/hardecg_on.png")
             self.gui.paste(self.gui_mock_crop, (496,241))
         self.gui.save("./image/updateGUI.png")
+        
         
     def start(self):
         try :
