@@ -34,7 +34,7 @@ class App(tkinter.Tk):
         self.gui_init = self.gui_init.resize((544,804))
         self.gui = Image.open("./image/GUI.png")
         self.gui = self.gui.resize((544,804))
-        self.gui_mock = Image.open("/Users/hyeonah/Desktop/Project/Physiophone/internetradioplayer/internetradioplayer/image/GUI-mock.png")
+        self.gui_mock = Image.open("./image/GUI-mock.png")
         self.gui_mock = self.gui_mock.resize((544,804))
         
         self.canvas = Canvas(self, width=544, height=804)
@@ -119,13 +119,13 @@ class App(tkinter.Tk):
         headbox = (479,19,533,71)
         if (self.params["boot"]) :
             #self.params["boot"] = False
-            self.gui.crop(headbox).save("boot_off.png")
-            self.gui_crop = Image.open("./boot_off.png")
+            self.gui.crop(headbox).save("./image/boot_off.png")
+            self.gui_crop = Image.open("./image/boot_off.png")
             self.gui.paste(self.gui_crop, (479,19))
         else :
             #self.params["boot"] = True
-            self.gui_mock.crop(headbox).save("boot_on.png")
-            self.gui_mock_crop = Image.open("./boot_on.png")
+            self.gui_mock.crop(headbox).save("./image/boot_on.png")
+            self.gui_mock_crop = Image.open("./image/boot_on.png")
             self.gui.paste(self.gui_mock_crop, (479,19))
         self.gui.save("./image/updateGUI.png")
         
