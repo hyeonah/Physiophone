@@ -97,8 +97,6 @@ class App(tkinter.Tk):
         self.configure(bg = 'black')
         self.gui_init = Image.open("./image/GUI.png")
         self.gui_init = self.gui_init.resize((544,804))
-        self.gui = Image.open("./image/GUI.png")
-        self.gui = self.gui.resize((544,804))
         self.gui_mock = Image.open("./image/GUI-mock.png")
         self.gui_mock = self.gui_mock.resize((544,804))
         
