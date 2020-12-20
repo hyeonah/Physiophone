@@ -27,8 +27,6 @@ class App(tkinter.Tk):
         
         self.init_GUI()
         
-        
-
         self.RT_Params = {
             "Synth" : ["sim","pinknoise"],
             "LCF" : 1,
@@ -128,6 +126,9 @@ class App(tkinter.Tk):
         self.canvas.pack()
         
     def update_GUI(self) :
+    
+        self.gui = Image.open("./image/GUI.png")
+        self.gui = self.gui.resize((544,804))
     
         mouse_x = self.RT_Params["mouse_x"]
         mouse_y = self.RT_Params["mouse_y"]
@@ -426,8 +427,7 @@ class App(tkinter.Tk):
 
     def callback(self, event):
     
-        self.gui = Image.open("./image/GUI.png")
-        self.gui = self.gui.resize((544,804))
+        
         self.RT_Params["mouse_x"] = event.x
         self.RT_Params["mouse_y"] = event.y
         
