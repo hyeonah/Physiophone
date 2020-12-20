@@ -57,7 +57,7 @@ class App(tkinter.Tk):
         
         
         #sttk.Scrollbar(self).grid(row =1, column = 1)
-                
+        
         self.gui_init = ImageTk.PhotoImage(self.gui_init)
         self.canvas.create_image(544,804, anchor= tkinter.SE, image=self.gui_init)
         self.canvas.pack()
@@ -65,20 +65,38 @@ class App(tkinter.Tk):
         
         #self = ThemedTk(theme="black")
         #self.set_theme("black")
-#        self.root = ThemedTk(theme="black")
-#        self.root.get_themes()
-#        #root.set_theme("arc")
+#        self = ThemedTk(theme="black")
+        #self.root.get_themes()
+        #root.set_theme("arc")
 #
 #        rightframe = Frame(self.root)
 #        bottomframe = Frame(rightframe)
 #        bottomframe.pack()
 #
-#        self.scale4 = ttk.Scale(bottomframe, orient= tk.HORIZONTAL)
+#        self.scale4 = ttk.Scale(self, orient= tk.HORIZONTAL)
 #        self.scale4.grid(row=2, column=2, pady=15, padx=30)
-        
-        #self.canvas.create_window(160,400, window = self.scale4)
+#
+#        self.canvas.create_window(160,400, window = self.scale4)
         
     
+
+    # Error messages handling
+    def display_error_message(self,msg,flag):
+        messagebox.showerror("Error", msg)
+        if flag == 1:
+            self.destroy()
+            
+    def motion(self, event):
+        print("image clicked : (%s %s)" % (event.x, event.y))
+        return
+    
+    def leftclick(self, event):
+        x, y = event.widget.winfo_pointerxy()
+        print('{}, {}'.format(x,y))
+
+    def key(self, event):
+        print ("pressed", repr(event.char))
+        
     def init_GUI(self) :
     
         tkinter.Tk.__init__(self)
@@ -95,6 +113,24 @@ class App(tkinter.Tk):
         self.canvas.bind('<Key>', self.key)
         self.canvas.bind('<Button-1>', self.callback)
         self.canvas.pack()
+        
+        root = ThemedTk()
+        root.get_themes()
+        root.set_theme("black")
+        
+        #self.scale.grid(row=2, column=10, pady=15, padx=30)
+        
+        #self.scale_frame = Frame(self)
+#        var = tk.DoubleVar()
+        self.scale = ttk.Scale(self, orient= tk.HORIZONTAL, length="420", variable = var)
+#
+#        selection = str(var.get())
+#        button = ttk.Button(self, text = selection, command=sel )
+#        button.pack()
+#        #elf.canvas.scale("all, ")
+
+        self.canvas.create_window(320,400, window = self.scale)
+        #self.canvas.pack()
         
     def update_GUI(self) :
     
@@ -378,7 +414,6 @@ class App(tkinter.Tk):
             self.gui.paste(self.gui_mock_crop, (496,241))
         self.gui.save("./image/updateGUI.png")
         
-        
     def start(self):
         try :
             self.update_GUI()
@@ -393,8 +428,7 @@ class App(tkinter.Tk):
         self.stop_audio()
         self.stop_modulation()
         
-    def key(self, event):
-        print ("pressed", repr(event.char))
+        
 
     def callback(self, event):
         self.RT_Params["mouse_x"] = event.x
@@ -402,6 +436,18 @@ class App(tkinter.Tk):
         self.update_GUI()
         
         print ("clicked at", event.x, event.y)
+       
+        
+#    def move_window(self,event):
+#        global img
+#        cx, cy = event2canvas(event, self.canvas)
+#        x,y,wh = (int(cx),int(cy),100)
+#        window_data = self.foreground_image_data[y:y+wh,x:x+wh]
+#        bg_img = self.background_image_data.copy()
+#        bg_img[y:y+wh,x:x+wh] = window_data
+#        img = ImageTk.PhotoImage(PIL.Image.fromarray(bg_img))
+#        self.canvas.create_image(0, 0,image=img,anchor="nw")
+    
         
     # When you click to exit, this function is called
     def on_exit(self):
@@ -409,6 +455,7 @@ class App(tkinter.Tk):
         
 if __name__ == '__main__':
     App().mainloop()
+
 
 
 
