@@ -126,11 +126,9 @@ class App(tkinter.Tk):
     def updateBoot(self) :
         headbox = (479,19,533,71)
         if (self.RT_Params["boot"]) :
-            #self.gui.crop(headbox).save("./image/boot_off.png")
             self.gui_crop = Image.open("./image/boot_off.png")
             self.gui.paste(self.gui_crop, (479,19))
         else :
-            #self.gui_mock.crop(headbox).save("./image/boot_on.png")
             self.gui_mock_crop = Image.open("./image/boot_on.png")
             self.gui.paste(self.gui_mock_crop, (479,19))
         self.gui.save("./image/updateGUI.png")
@@ -138,11 +136,9 @@ class App(tkinter.Tk):
     def updateRecord(self) :
         headbox = (481,87,531,137)
         if (self.RT_Params["record"]) :
-            #self.gui.crop(headbox).save("./image/record_off.png")
             self.gui_crop = Image.open("./image/record_off.png")
             self.gui.paste(self.gui_crop, (481,87))
         else :
-            #self.gui_mock.crop(headbox).save("./image/record_on.png")
             self.gui_mock_crop = Image.open("./image/record_on.png")
             self.gui.paste(self.gui_mock_crop, (481,87))
         self.gui.save("./image/updateGUI.png")
@@ -150,11 +146,9 @@ class App(tkinter.Tk):
     def updateFlip(self):
         headbox = (200,41,217,57)
         if (self.RT_Params["flip"]) :
-            #self.gui.crop(headbox).save("./image/flip_off.png")
             self.gui_crop = Image.open("./image/flip_off.png")
             self.gui.paste(self.gui_crop, (200,41))
         else :
-            #self.gui_mock.crop(headbox).save("./image/radio_on.png")
             self.gui_mock_crop = Image.open("./image/radio_on.png")
             self.gui.paste(self.gui_mock_crop, (200,41))
         self.gui.save("./image/updateGUI.png")
@@ -162,7 +156,6 @@ class App(tkinter.Tk):
     def updateEnergy(self):
         headbox = (201,108,218,125)
         if (self.RT_Params["energy"]) :
-            #self.gui.crop(headbox).save("./image/energy_off.png")
             self.gui_crop = Image.open("./image/energy_off.png")
             self.gui.paste(self.gui_crop, (201,108))
         else :
@@ -173,11 +166,9 @@ class App(tkinter.Tk):
     def updateSinusoidal(self):
         headbox = (376,55,385,68)
         if (self.RT_Params["sinusoidal"]) :
-            #self.gui.crop(headbox).save("./image/sinusoidal_off.png")
             self.gui_crop = Image.open("./image/sinusoidal_off.png")
             self.gui.paste(self.gui_crop, (376,55))
         else :
-            #self.gui_mock.crop(headbox).save("./image/sinusoidal_on.png")
             self.gui_mock_crop = Image.open("./image/sinusoidal_on.png")
             self.gui.paste(self.gui_mock_crop, (376,55))
         self.gui.save("./image/updateGUI.png")
@@ -185,7 +176,6 @@ class App(tkinter.Tk):
     def updatePinknoise(self):
         headbox = (380,104,386,125)
         if (self.RT_Params["pinknoise"]) :
-            #self.gui.crop(headbox).save("./image/pinknoise_off.png")
             self.gui_crop = Image.open("./image/pinknoise_off.png")
             self.gui.paste(self.gui_crop, (380,104))
         else :
@@ -196,11 +186,9 @@ class App(tkinter.Tk):
     def updateHardECG(self):
         headbox = (439,241,443,244)
         if (self.RT_Params["hardecg"]) :
-            #self.gui.crop(headbox).save("./image/hardecg_off.png")
             self.gui_crop = Image.open("./image/hardecg_off.png")
             self.gui.paste(self.gui_crop, (440,242))
         else :
-            #self.gui_mock.crop(headbox).save("./image/hardecg_on.png")
             self.gui_mock_crop = Image.open("./image/hardecg_on.png")
             self.gui.paste(self.gui_mock_crop, (439,241))
         self.gui.save("./image/updateGUI.png")
@@ -208,7 +196,6 @@ class App(tkinter.Tk):
     def updateDelta(self):
         headbox = (44,242,47,244)
         if (self.RT_Params["delta"]) :
-            #self.gui.crop(headbox).save("./image/delta_off.png")
             self.gui_crop = Image.open("./image/delta_off.png")
             self.gui.paste(self.gui_crop, (46,244))
         else :
@@ -219,11 +206,9 @@ class App(tkinter.Tk):
     def updateAlpha(self):
         headbox = (102,243,104,245)
         if (self.RT_Params["alpha"]) :
-            #self.gui.crop(headbox).save("./image/alpha_off.png")
             self.gui_crop = Image.open("./image/alpha_off.png")
             self.gui.paste(self.gui_crop, (102,243))
         else :
-            #self.gui_mock.crop(headbox).save("sinusoidal_on.png")
             self.gui_mock_crop = Image.open("./image/hardecg_on.png")
             self.gui.paste(self.gui_mock_crop, (100,241))
         self.gui.save("./image/updateGUI.png")
@@ -231,11 +216,9 @@ class App(tkinter.Tk):
     def updateBeta(self):
         headbox = (158,242,159,244)
         if (self.RT_Params["beta"]) :
-            #self.gui.crop(headbox).save("./image/beta_off.png")
             self.gui_crop = Image.open("./image/beta_off.png")
             self.gui.paste(self.gui_crop, (158,242))
         else :
-            #self.gui_mock.crop(headbox).save("sinusoidal_on.png")
             self.gui_mock_crop = Image.open("./image/hardecg_on.png")
             self.gui.paste(self.gui_mock_crop, (157,241))
         self.gui.save("./image/updateGUI.png")
@@ -243,7 +226,6 @@ class App(tkinter.Tk):
     def updateGamma(self):
         headbox = (214,242,216,243)
         if (self.RT_Params["gamma"]) :
-            #self.gui.crop(headbox).save("./image/gamma_off.png")
             self.gui_crop = Image.open("./image/gamma_off.png")
             self.gui.paste(self.gui_crop, (214,242))
         else :
@@ -254,12 +236,9 @@ class App(tkinter.Tk):
     def updateEGG(self):
         headbox = (271,241,273,244)
         if (self.RT_Params["egg"]) :
-            #self.gui.crop(headbox).save("./image/egg_off.png")
             self.gui_crop = Image.open("./image/egg_off.png")
             self.gui.paste(self.gui_crop, (271,241))
         else :
-            #self.params["record"] = True
-            #self.gui_mock.crop(headbox).save("sinusoidal_on.png")
             self.gui_mock_crop = Image.open("./image/hardecg_on.png")
             self.gui.paste(self.gui_mock_crop, (269,240))
         self.gui.save("./image/updateGUI.png")
@@ -267,7 +246,6 @@ class App(tkinter.Tk):
     def updateEMG(self):
         headbox = (328,242,330,244)
         if (self.RT_Params["emg"]) :
-            #self.gui.crop(headbox).save("./image/emg_off.png")
             self.gui_crop = Image.open("./image/emg_off.png")
             self.gui.paste(self.gui_crop, (328,242))
         else :
@@ -278,7 +256,6 @@ class App(tkinter.Tk):
     def updateSoftECG(self):
         headbox = (384,242,386,244)
         if (self.RT_Params["softecg"]) :
-            #self.gui.crop(headbox).save("./image/softecg_off.png")
             self.gui_crop = Image.open("./image/softecg_off.png")
             self.gui.paste(self.gui_crop, (384,242))
         else :
@@ -289,7 +266,6 @@ class App(tkinter.Tk):
     def updateManual(self):
         headbox = (497,242,499,243)
         if (self.RT_Params["manual"]) :
-            #self.gui.crop(headbox).save("./image/manual_off.png")
             self.gui_crop = Image.open("./image/manual_off.png")
             self.gui.paste(self.gui_crop, (497,242))
         else :
