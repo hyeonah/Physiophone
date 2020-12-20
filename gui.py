@@ -121,7 +121,7 @@ class App(tkinter.Tk):
         #self.scale.grid(row=2, column=10, pady=15, padx=30)
         
         #self.scale_frame = Frame(self)
-#        var = tk.DoubleVar()
+        var = tk.DoubleVar()
         self.scale = ttk.Scale(self, orient= tk.HORIZONTAL, length="420", variable = var)
 #
 #        selection = str(var.get())
