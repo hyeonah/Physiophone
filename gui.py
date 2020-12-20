@@ -42,7 +42,15 @@ class App(tkinter.Tk):
         self.canvas.bind('<Button-1>', self.callback)
         self.canvas.pack()
 
-        self.params = {
+        self.RT_Params = {
+            "Synth" : ["sim","pinknoise"],
+            "LCF" : 1,
+            "HCF" : 120,
+            "NTC" : 60,
+            "LIN" : 400,
+            "EXP" : 1,
+            "ADD" : 0,
+            "Volume" : 1,
             "boot" : True,
             "record" : True,
             "flip" : True,
@@ -95,7 +103,7 @@ class App(tkinter.Tk):
     
 
     # Error messages handling
-    def display_error_message(self,msg,flag):          
+    def display_error_message(self,msg,flag):
         messagebox.showerror("Error", msg)
         if flag == 1:
             self.destroy()
@@ -117,125 +125,104 @@ class App(tkinter.Tk):
         
     def updateBoot(self) :
         headbox = (479,19,533,71)
-        if (self.params["boot"]) :
-            #self.params["boot"] = False
-            self.gui.crop(headbox).save("./image/boot_off.png")
+        if (self.RT_Params["boot"]) :
+            #self.gui.crop(headbox).save("./image/boot_off.png")
             self.gui_crop = Image.open("./image/boot_off.png")
             self.gui.paste(self.gui_crop, (479,19))
         else :
-            #self.params["boot"] = True
-            self.gui_mock.crop(headbox).save("./image/boot_on.png")
+            #self.gui_mock.crop(headbox).save("./image/boot_on.png")
             self.gui_mock_crop = Image.open("./image/boot_on.png")
             self.gui.paste(self.gui_mock_crop, (479,19))
         self.gui.save("./image/updateGUI.png")
         
     def updateRecord(self) :
         headbox = (481,87,531,137)
-        if (self.params["record"]) :
-            #self.params["record"] = False
-            self.gui.crop(headbox).save("./image/record_off.png")
+        if (self.RT_Params["record"]) :
+            #self.gui.crop(headbox).save("./image/record_off.png")
             self.gui_crop = Image.open("./image/record_off.png")
             self.gui.paste(self.gui_crop, (481,87))
         else :
-            #self.params["record"] = True
-            self.gui_mock.crop(headbox).save("./image/record_on.png")
+            #self.gui_mock.crop(headbox).save("./image/record_on.png")
             self.gui_mock_crop = Image.open("./image/record_on.png")
             self.gui.paste(self.gui_mock_crop, (481,87))
         self.gui.save("./image/updateGUI.png")
 
     def updateFlip(self):
         headbox = (200,41,217,57)
-        if (self.params["flip"]) :
-            #self.params["record"] = False
-            self.gui.crop(headbox).save("./image/flip_off.png")
+        if (self.RT_Params["flip"]) :
+            #self.gui.crop(headbox).save("./image/flip_off.png")
             self.gui_crop = Image.open("./image/flip_off.png")
             self.gui.paste(self.gui_crop, (200,41))
         else :
-            #self.params["record"] = True
-            self.gui_mock.crop(headbox).save("./image/radio_on.png")
+            #self.gui_mock.crop(headbox).save("./image/radio_on.png")
             self.gui_mock_crop = Image.open("./image/radio_on.png")
             self.gui.paste(self.gui_mock_crop, (200,41))
         self.gui.save("./image/updateGUI.png")
         
     def updateEnergy(self):
         headbox = (201,108,218,125)
-        if (self.params["energy"]) :
-            #self.params["record"] = False
-            self.gui.crop(headbox).save("./image/energy_off.png")
+        if (self.RT_Params["energy"]) :
+            #self.gui.crop(headbox).save("./image/energy_off.png")
             self.gui_crop = Image.open("./image/energy_off.png")
             self.gui.paste(self.gui_crop, (201,108))
         else :
-            #self.params["record"] = True
-            #self.gui_mock.crop(headbox).save("energy_on.png")
             self.gui_mock_crop = Image.open("./image/radio_on.png")
             self.gui.paste(self.gui_mock_crop, (201,108))
         self.gui.save("./image/updateGUI.png")
         
     def updateSinusoidal(self):
         headbox = (376,55,385,68)
-        if (self.params["sinusoidal"]) :
-            #self.params["record"] = False
-            self.gui.crop(headbox).save("./image/sinusoidal_off.png")
+        if (self.RT_Params["sinusoidal"]) :
+            #self.gui.crop(headbox).save("./image/sinusoidal_off.png")
             self.gui_crop = Image.open("./image/sinusoidal_off.png")
             self.gui.paste(self.gui_crop, (376,55))
         else :
-            #self.params["record"] = True
-            self.gui_mock.crop(headbox).save("./image/sinusoidal_on.png")
+            #self.gui_mock.crop(headbox).save("./image/sinusoidal_on.png")
             self.gui_mock_crop = Image.open("./image/sinusoidal_on.png")
             self.gui.paste(self.gui_mock_crop, (376,55))
         self.gui.save("./image/updateGUI.png")
         
     def updatePinknoise(self):
         headbox = (380,104,386,125)
-        if (self.params["pinknoise"]) :
-            #self.params["record"] = False
-            self.gui.crop(headbox).save("./image/pinknoise_off.png")
+        if (self.RT_Params["pinknoise"]) :
+            #self.gui.crop(headbox).save("./image/pinknoise_off.png")
             self.gui_crop = Image.open("./image/pinknoise_off.png")
             self.gui.paste(self.gui_crop, (380,104))
         else :
-            #self.params["record"] = True
-            #self.gui_mock.crop(headbox).save("sinusoidal_on.png")
             self.gui_mock_crop = Image.open("./image/sinusoidal_on.png")
             self.gui.paste(self.gui_mock_crop, (376,100))
         self.gui.save("./image/updateGUI.png")
 
     def updateHardECG(self):
         headbox = (439,241,443,244)
-        if (self.params["hardecg"]) :
-            #self.params["record"] = False
-            self.gui.crop(headbox).save("./image/hardecg_off.png")
+        if (self.RT_Params["hardecg"]) :
+            #self.gui.crop(headbox).save("./image/hardecg_off.png")
             self.gui_crop = Image.open("./image/hardecg_off.png")
             self.gui.paste(self.gui_crop, (440,242))
         else :
-            #self.params["record"] = True
-            self.gui_mock.crop(headbox).save("./image/hardecg_on.png")
+            #self.gui_mock.crop(headbox).save("./image/hardecg_on.png")
             self.gui_mock_crop = Image.open("./image/hardecg_on.png")
             self.gui.paste(self.gui_mock_crop, (439,241))
         self.gui.save("./image/updateGUI.png")
         
     def updateDelta(self):
         headbox = (44,242,47,244)
-        if (self.params["delta"]) :
-            #self.params["record"] = False
-            self.gui.crop(headbox).save("./image/delta_off.png")
+        if (self.RT_Params["delta"]) :
+            #self.gui.crop(headbox).save("./image/delta_off.png")
             self.gui_crop = Image.open("./image/delta_off.png")
             self.gui.paste(self.gui_crop, (46,244))
         else :
-            #self.params["record"] = True
-            #self.gui_mock.crop(headbox).save("sinusoidal_on.png")
             self.gui_mock_crop = Image.open("./image/hardecg_on.png")
             self.gui.paste(self.gui_mock_crop, (44,241))
         self.gui.save("./image/updateGUI.png")
         
     def updateAlpha(self):
         headbox = (102,243,104,245)
-        if (self.params["alpha"]) :
-            #self.params["record"] = False
-            self.gui.crop(headbox).save("./image/alpha_off.png")
+        if (self.RT_Params["alpha"]) :
+            #self.gui.crop(headbox).save("./image/alpha_off.png")
             self.gui_crop = Image.open("./image/alpha_off.png")
             self.gui.paste(self.gui_crop, (102,243))
         else :
-            #self.params["record"] = True
             #self.gui_mock.crop(headbox).save("sinusoidal_on.png")
             self.gui_mock_crop = Image.open("./image/hardecg_on.png")
             self.gui.paste(self.gui_mock_crop, (100,241))
@@ -243,13 +230,11 @@ class App(tkinter.Tk):
 
     def updateBeta(self):
         headbox = (158,242,159,244)
-        if (self.params["beta"]) :
-            #self.params["record"] = False
-            self.gui.crop(headbox).save("./image/beta_off.png")
+        if (self.RT_Params["beta"]) :
+            #self.gui.crop(headbox).save("./image/beta_off.png")
             self.gui_crop = Image.open("./image/beta_off.png")
             self.gui.paste(self.gui_crop, (158,242))
         else :
-            #self.params["record"] = True
             #self.gui_mock.crop(headbox).save("sinusoidal_on.png")
             self.gui_mock_crop = Image.open("./image/hardecg_on.png")
             self.gui.paste(self.gui_mock_crop, (157,241))
@@ -257,23 +242,19 @@ class App(tkinter.Tk):
 
     def updateGamma(self):
         headbox = (214,242,216,243)
-        if (self.params["gamma"]) :
-            #self.params["record"] = False
-            self.gui.crop(headbox).save("./image/gamma_off.png")
+        if (self.RT_Params["gamma"]) :
+            #self.gui.crop(headbox).save("./image/gamma_off.png")
             self.gui_crop = Image.open("./image/gamma_off.png")
             self.gui.paste(self.gui_crop, (214,242))
         else :
-            #self.params["record"] = True
-            #self.gui_mock.crop(headbox).save("sinusoidal_on.png")
             self.gui_mock_crop = Image.open("./image/hardecg_on.png")
             self.gui.paste(self.gui_mock_crop, (213,241))
         self.gui.save("./image/updateGUI.png")
 
     def updateEGG(self):
         headbox = (271,241,273,244)
-        if (self.params["egg"]) :
-            #self.params["record"] = False
-            self.gui.crop(headbox).save("./image/egg_off.png")
+        if (self.RT_Params["egg"]) :
+            #self.gui.crop(headbox).save("./image/egg_off.png")
             self.gui_crop = Image.open("./image/egg_off.png")
             self.gui.paste(self.gui_crop, (271,241))
         else :
@@ -285,42 +266,33 @@ class App(tkinter.Tk):
     
     def updateEMG(self):
         headbox = (328,242,330,244)
-        if (self.params["emg"]) :
-            #self.params["record"] = False
-            self.gui.crop(headbox).save("./image/emg_off.png")
+        if (self.RT_Params["emg"]) :
+            #self.gui.crop(headbox).save("./image/emg_off.png")
             self.gui_crop = Image.open("./image/emg_off.png")
             self.gui.paste(self.gui_crop, (328,242))
         else :
-            #self.params["record"] = True
-            #self.gui_mock.crop(headbox).save("sinusoidal_on.png")
             self.gui_mock_crop = Image.open("./image/hardecg_on.png")
             self.gui.paste(self.gui_mock_crop, (327,241))
         self.gui.save("./image/updateGUI.png")
         
     def updateSoftECG(self):
         headbox = (384,242,386,244)
-        if (self.params["softecg"]) :
-            #self.params["record"] = False
-            self.gui.crop(headbox).save("./image/softecg_off.png")
+        if (self.RT_Params["softecg"]) :
+            #self.gui.crop(headbox).save("./image/softecg_off.png")
             self.gui_crop = Image.open("./image/softecg_off.png")
             self.gui.paste(self.gui_crop, (384,242))
         else :
-            #self.params["record"] = True
-            #self.gui_mock.crop(headbox).save("sinusoidal_on.png")
             self.gui_mock_crop = Image.open("./image/hardecg_on.png")
             self.gui.paste(self.gui_mock_crop, (383,241))
         self.gui.save("./image/updateGUI.png")
         
     def updateManual(self):
         headbox = (497,242,499,243)
-        if (self.params["manual"]) :
-            #self.params["record"] = False
-            self.gui.crop(headbox).save("./image/manual_off.png")
+        if (self.RT_Params["manual"]) :
+            #self.gui.crop(headbox).save("./image/manual_off.png")
             self.gui_crop = Image.open("./image/manual_off.png")
             self.gui.paste(self.gui_crop, (497,242))
         else :
-            #self.params["record"] = True
-            #self.gui_mock.crop(headbox).save("sinusoidal_on.png")
             self.gui_mock_crop = Image.open("./image/hardecg_on.png")
             self.gui.paste(self.gui_mock_crop, (496,241))
         self.gui.save("./image/updateGUI.png")
@@ -332,108 +304,108 @@ class App(tkinter.Tk):
          
         #boot
         if (479 <= event.x <= 516 and 22 <= event.y <= 70):
-            if (self.params["boot"]) :
-                self.params["boot"] = False
+            if (self.RT_Params["boot"]) :
+                self.RT_Params["boot"] = False
             else :
-                self.params["boot"] = True
+                self.RT_Params["boot"] = True
                        
         #record
         if (481 <= event.x <= 531 and 87 <= event.y <= 137):
-            if (self.params["record"]) :
-                self.params["record"] = False
+            if (self.RT_Params["record"]) :
+                self.RT_Params["record"] = False
             else :
-                self.params["record"] = True
+                self.RT_Params["record"] = True
                 
         #Flip
         if( 183 <= event.x <= 233 and 22 <= event.y <=72):
-            if (self.params["flip"]) :
-                self.params["flip"] = False
+            if (self.RT_Params["flip"]) :
+                self.RT_Params["flip"] = False
             else :
-                self.params["flip"] = True
+                self.RT_Params["flip"] = True
 
         #energy
         if( 183 <= event.x <= 233 and 88 <= event.y <= 137):
-            if (self.params["energy"]) :
-                self.params["energy"] = False
+            if (self.RT_Params["energy"]) :
+                self.RT_Params["energy"] = False
             else :
-                self.params["energy"] = True
+                self.RT_Params["energy"] = True
         
         #Sinusoidal
         if( 256 <= event.x <= 388 and 44 <= event.y <= 75):
-            if (self.params["sinusoidal"]) :
-                self.params["sinusoidal"] = False
+            if (self.RT_Params["sinusoidal"]) :
+                self.RT_Params["sinusoidal"] = False
             else :
-                self.params["sinusoidal"] = True
+                self.RT_Params["sinusoidal"] = True
 
         #Pink Noise
         if( 257 <= event.x <= 386 and 92 <= event.y <= 125):
-            if (self.params["pinknoise"]) :
-                self.params["pinknoise"] = False
+            if (self.RT_Params["pinknoise"]) :
+                self.RT_Params["pinknoise"] = False
             else :
-                self.params["pinknoise"] = True
+                self.RT_Params["pinknoise"] = True
         
         #Delta
         if( 26 <= event.x <= 66 and 173 <= event.y <= 249):
-            if (self.params["delta"]) :
-                self.params["delta"] = False
+            if (self.RT_Params["delta"]) :
+                self.RT_Params["delta"] = False
             else :
-                self.params["delta"] = True
+                self.RT_Params["delta"] = True
  
         #Alpha
         if( 80 <= event.x <= 128 and 173 <= event.y <= 245):
-            if (self.params["alpha"]) :
-                self.params["alpha"] = False
+            if (self.RT_Params["alpha"]) :
+                self.RT_Params["alpha"] = False
             else :
-                self.params["alpha"] = True
+                self.RT_Params["alpha"] = True
  
         #Beta
         if( 137 <= event.x <= 180 and 173 <= event.y <= 245):
-            if (self.params["beta"]) :
-                self.params["beta"] = False
+            if (self.RT_Params["beta"]) :
+                self.RT_Params["beta"] = False
             else :
-                self.params["beta"] = True
+                self.RT_Params["beta"] = True
  
         #Gamma
         if( 190 <= event.x <= 238 and 173 <= event.y <= 245):
-            if (self.params["gamma"]) :
-                self.params["gamma"] = False
+            if (self.RT_Params["gamma"]) :
+                self.RT_Params["gamma"] = False
             else :
-                self.params["gamma"] = True
+                self.RT_Params["gamma"] = True
 
         #EGG
         if( 252 <= event.x <= 293 and 173 <= event.y <= 245):
-            if (self.params["egg"]) :
-                self.params["egg"] = False
+            if (self.RT_Params["egg"]) :
+                self.RT_Params["egg"] = False
             else :
-                self.params["egg"] = True
+                self.RT_Params["egg"] = True
                 
         #EMG
         if( 308 <= event.x <= 347 and 173 <= event.y <= 245):
-            if (self.params["emg"]) :
-                self.params["emg"] = False
+            if (self.RT_Params["emg"]) :
+                self.RT_Params["emg"] = False
             else :
-                self.params["emg"] = True
+                self.RT_Params["emg"] = True
                 
         #Soft ECG
         if( 362 <= event.x <= 408 and 172 <= event.y <= 245):
-            if (self.params["softecg"]) :
-                self.params["softecg"] = False
+            if (self.RT_Params["softecg"]) :
+                self.RT_Params["softecg"] = False
             else :
-                self.params["softecg"] = True
+                self.RT_Params["softecg"] = True
 
         #Hard ECG
         if( 418 <= event.x <= 466 and 173 <= event.y <= 245):
-            if (self.params["hardecg"]) :
-                self.params["hardecg"] = False
+            if (self.RT_Params["hardecg"]) :
+                self.RT_Params["hardecg"] = False
             else :
-                self.params["hardecg"] = True
+                self.RT_Params["hardecg"] = True
 
         #Manual
         if( 481 <= event.x <= 521 and 173 <= event.y <= 245):
-            if (self.params["manual"]) :
-                self.params["manual"] = False
+            if (self.RT_Params["manual"]) :
+                self.RT_Params["manual"] = False
             else :
-                self.params["manual"] = True
+                self.RT_Params["manual"] = True
                 
         self.updateBoot()
         self.updateRecord()
@@ -468,7 +440,7 @@ class App(tkinter.Tk):
         self.canvas.create_image(0, 0,image=img,anchor="nw")
     
         
-    # When you click to exit, this function is called 
+    # When you click to exit, this function is called
     def on_exit(self):
         self.destroy()
         
