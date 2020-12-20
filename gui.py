@@ -88,24 +88,6 @@ class App(tkinter.Tk):
         #self.canvas.create_window(160,400, window = self.scale4)
         
     
-
-    # Error messages handling
-    def display_error_message(self,msg,flag):
-        messagebox.showerror("Error", msg)
-        if flag == 1:
-            self.destroy()
-            
-    def motion(self, event):
-        print("image clicked : (%s %s)" % (event.x, event.y))
-        return
-    
-    def leftclick(self, event):
-        x, y = event.widget.winfo_pointerxy()
-        print('{}, {}'.format(x,y))
-
-    def key(self, event):
-        print ("pressed", repr(event.char))
-        
     def init_GUI(self) :
     
         tkinter.Tk.__init__(self)
@@ -421,7 +403,8 @@ class App(tkinter.Tk):
         self.stop_audio()
         self.stop_modulation()
         
-        
+    def key(self, event):
+        print ("pressed", repr(event.char))
 
     def callback(self, event):
         self.RT_Params["mouse_x"] = event.x
