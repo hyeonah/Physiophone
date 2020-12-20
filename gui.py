@@ -408,7 +408,6 @@ class App(tkinter.Tk):
         self.gui.save("./image/updateGUI.png")
         
     def start(self):
-        
         try :
             self.update_GUI()
             #self.start_board()
@@ -418,7 +417,6 @@ class App(tkinter.Tk):
             self.stop()
 
     def stop(self) :
-        
         self.stop_board()
         self.stop_audio()
         self.stop_modulation()
@@ -426,26 +424,11 @@ class App(tkinter.Tk):
         
 
     def callback(self, event):
-    
-        
         self.RT_Params["mouse_x"] = event.x
         self.RT_Params["mouse_y"] = event.y
-        
         self.update_GUI()
         
         print ("clicked at", event.x, event.y)
-       
-        
-    def move_window(self,event):
-        global img
-        cx, cy = event2canvas(event, self.canvas)
-        x,y,wh = (int(cx),int(cy),100)
-        window_data = self.foreground_image_data[y:y+wh,x:x+wh]
-        bg_img = self.background_image_data.copy()
-        bg_img[y:y+wh,x:x+wh] = window_data
-        img = ImageTk.PhotoImage(PIL.Image.fromarray(bg_img))
-        self.canvas.create_image(0, 0,image=img,anchor="nw")
-    
         
     # When you click to exit, this function is called
     def on_exit(self):
