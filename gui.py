@@ -20,6 +20,7 @@ class App(tkinter.Tk):
         
         self.RT_Params = {
             "Synth" : {"sin" : 0, "pinknoise" : 1},
+            "Presets" : {"Delta" : 0, "Alpha" : 1, "Beta" : 2, "Gamma" : 3, "EGG" : 4, "EMG" : 5, "SoftECG" : 6, "HardECG" : 7, "Manual" : 8},
             "LCF" : 1,
             "HCF" : 120,
             "NTC" : 60,
@@ -31,17 +32,6 @@ class App(tkinter.Tk):
             "record" : True,
             "flip" : True,
             "energy" : True,
-            "sinusoidal" : True,
-            "pinknoise" : True,
-            "delta" : True,
-            "alpha" : True,
-            "beta" : True,
-            "gamma" : True,
-            "egg" : True,
-            "emg" : True,
-            "softecg" : True,
-            "hardecg" : True,
-            "manual" : True,
             "mouse_x" : 0,
             "mouse_y" : 0,
         }
@@ -88,14 +78,45 @@ class App(tkinter.Tk):
         self.canvas.bind('<Button-1>', self.callback)
         self.canvas.pack()
         
-#        #sin
+        #sin
         self.v = tk.IntVar()
         self.sin = tk.Radiobutton(self, variable = self.v, value= self.RT_Params["Synth"].get("sin"), bg = "black", command = self.update_Synth)
         self.canvas.create_window(390,60, window = self.sin)
-#
-#        #pink
+
+        #pink
         self.pink = tk.Radiobutton(self, variable = self.v, value=self.RT_Params["Synth"].get("pinknoise"), bg = "black", command = self.update_Synth)
         self.canvas.create_window(390,102, window = self.pink)
+        
+    
+        #Presets
+        self.vp = tk.IntVar()
+        self.delta = tk.Radiobutton(self, variable = self.vp, value= self.RT_Params["Presets"].get("Delta"), bg = "black", command = self.update_Presets)
+        self.canvas.create_window(46,240, window = self.delta)
+
+        self.alpha = tk.Radiobutton(self, variable = self.vp, value=self.RT_Params["Presets"].get("Alpha"), bg = "black", command = self.update_Presets)
+        self.canvas.create_window(105,240, window = self.alpha)
+        
+        self.beta = tk.Radiobutton(self, variable = self.vp, value= self.RT_Params["Presets"].get("Beta"), bg = "black", command = self.update_Presets)
+        self.canvas.create_window(161,240, window = self.beta)
+
+        self.gamma = tk.Radiobutton(self, variable = self.vp, value=self.RT_Params["Presets"].get("Gamma"), bg = "black", command = self.update_Presets)
+        self.canvas.create_window(220,240, window = self.gamma)
+        
+        self.egg = tk.Radiobutton(self, variable = self.vp, value= self.RT_Params["Presets"].get("EGG"), bg = "black", command = self.update_Presets)
+        self.canvas.create_window(279,240, window = self.egg)
+
+        self.emg = tk.Radiobutton(self, variable = self.vp, value=self.RT_Params["Presets"].get("EMG"), bg = "black", command = self.update_Presets)
+        self.canvas.create_window(335,240, window = self.emg)
+        
+        self.softecg = tk.Radiobutton(self, variable = self.vp, value=self.RT_Params["Presets"].get("SoftECG"), bg = "black", command = self.update_Presets)
+        self.canvas.create_window(387,240, window = self.softecg)
+        
+        self.hardecg = tk.Radiobutton(self, variable = self.vp, value= self.RT_Params["Presets"].get("HardECG"), bg = "black", command = self.update_Presets)
+        self.canvas.create_window(444,240, window = self.hardecg)
+
+        self.manual = tk.Radiobutton(self, variable = self.vp, value=self.RT_Params["Presets"].get("Manual"), bg = "black", command = self.update_Presets)
+        self.canvas.create_window(502,240, window = self.manual)
+        
         
         #synth
 #        v3 = tk.IntVar()
@@ -182,82 +203,11 @@ class App(tkinter.Tk):
             else :
                 self.RT_Params["energy"] = True
         
-        #Delta
-        if( 26 <= mouse_x <= 66 and 173 <= mouse_y <= 249):
-            if (self.RT_Params["delta"]) :
-                self.RT_Params["delta"] = False
-            else :
-                self.RT_Params["delta"] = True
- 
-        #Alpha
-        if( 80 <= mouse_x <= 128 and 173 <= mouse_y <= 245):
-            if (self.RT_Params["alpha"]) :
-                self.RT_Params["alpha"] = False
-            else :
-                self.RT_Params["alpha"] = True
- 
-        #Beta
-        if( 137 <= mouse_x <= 180 and 173 <= mouse_y <= 245):
-            if (self.RT_Params["beta"]) :
-                self.RT_Params["beta"] = False
-            else :
-                self.RT_Params["beta"] = True
- 
-        #Gamma
-        if( 190 <= mouse_x <= 238 and 173 <= mouse_y <= 245):
-            if (self.RT_Params["gamma"]) :
-                self.RT_Params["gamma"] = False
-            else :
-                self.RT_Params["gamma"] = True
-
-        #EGG
-        if( 252 <= mouse_x <= 293 and 173 <= mouse_y <= 245):
-            if (self.RT_Params["egg"]) :
-                self.RT_Params["egg"] = False
-            else :
-                self.RT_Params["egg"] = True
-                
-        #EMG
-        if( 308 <= mouse_x <= 347 and 173 <= mouse_y <= 245):
-            if (self.RT_Params["emg"]) :
-                self.RT_Params["emg"] = False
-            else :
-                self.RT_Params["emg"] = True
-                
-        #Soft ECG
-        if( 362 <= mouse_x <= 408 and 172 <= mouse_y <= 245):
-            if (self.RT_Params["softecg"]) :
-                self.RT_Params["softecg"] = False
-            else :
-                self.RT_Params["softecg"] = True
-
-        #Hard ECG
-        if( 418 <= mouse_x <= 466 and 173 <= mouse_y <= 245):
-            if (self.RT_Params["hardecg"]) :
-                self.RT_Params["hardecg"] = False
-            else :
-                self.RT_Params["hardecg"] = True
-
-        #Manual
-        if( 481 <= mouse_x <= 521 and 173 <= mouse_y <= 245):
-            if (self.RT_Params["manual"]) :
-                self.RT_Params["manual"] = False
-            else :
-                self.RT_Params["manual"] = True
-                
+        
         self.update_Boot()
         self.update_Record()
         self.update_Flip()
         self.update_Energy()
-        self.update_HardECG()
-        self.update_Delta()
-        self.update_Alpha()
-        self.update_Beta()
-        self.update_Gamma()
-        self.update_EGG()
-        self.update_EMG()
-        self.update_SoftECG()
-        self.update_Manual()
         
         self.gui = ImageTk.PhotoImage(self.gui)
         self.canvas.create_image(544,804, anchor= tkinter.SE, image=self.gui)
@@ -301,121 +251,12 @@ class App(tkinter.Tk):
             self.gui_mock_crop = Image.open("./image/radio_on.png")
             self.gui.paste(self.gui_mock_crop, (201,108))
         self.gui.save("./image/updateGUI.png")
-        
-    def update_Sinusoidal(self):
-        headbox = (376,55,385,68)
-        if (self.RT_Params["sinusoidal"]) :
-            self.gui_crop = Image.open("./image/sinusoidal_off.png")
-            self.gui.paste(self.gui_crop, (376,55))
-        else :
-            self.gui_mock_crop = Image.open("./image/sinusoidal_on.png")
-            self.gui.paste(self.gui_mock_crop, (376,55))
-        self.gui.save("./image/updateGUI.png")
-        
-    def update_Pinknoise(self):
-        headbox = (380,104,386,125)
-        if (self.RT_Params["pinknoise"]) :
-            self.gui_crop = Image.open("./image/pinknoise_off.png")
-            self.gui.paste(self.gui_crop, (380,104))
-        else :
-            self.gui_mock_crop = Image.open("./image/sinusoidal_on.png")
-            self.gui.paste(self.gui_mock_crop, (376,100))
-        self.gui.save("./image/updateGUI.png")
-
-    def update_HardECG(self):
-        headbox = (439,241,443,244)
-        if (self.RT_Params["hardecg"]) :
-            self.gui_crop = Image.open("./image/hardecg_off.png")
-            self.gui.paste(self.gui_crop, (440,242))
-        else :
-            self.gui_mock_crop = Image.open("./image/hardecg_on.png")
-            self.gui.paste(self.gui_mock_crop, (439,241))
-        self.gui.save("./image/updateGUI.png")
-        
-    def update_Delta(self):
-        headbox = (44,242,47,244)
-        if (self.RT_Params["delta"]) :
-            self.gui_crop = Image.open("./image/delta_off.png")
-            self.gui.paste(self.gui_crop, (46,244))
-        else :
-            self.gui_mock_crop = Image.open("./image/hardecg_on.png")
-            self.gui.paste(self.gui_mock_crop, (44,241))
-        self.gui.save("./image/updateGUI.png")
-        
-    def update_Alpha(self):
-        headbox = (102,243,104,245)
-        if (self.RT_Params["alpha"]) :
-            self.gui_crop = Image.open("./image/alpha_off.png")
-            self.gui.paste(self.gui_crop, (102,243))
-        else :
-            self.gui_mock_crop = Image.open("./image/hardecg_on.png")
-            self.gui.paste(self.gui_mock_crop, (100,241))
-        self.gui.save("./image/updateGUI.png")
-
-    def update_Beta(self):
-        headbox = (158,242,159,244)
-        if (self.RT_Params["beta"]) :
-            self.gui_crop = Image.open("./image/beta_off.png")
-            self.gui.paste(self.gui_crop, (158,242))
-        else :
-            self.gui_mock_crop = Image.open("./image/hardecg_on.png")
-            self.gui.paste(self.gui_mock_crop, (157,241))
-        self.gui.save("./image/updateGUI.png")
-
-    def update_Gamma(self):
-        headbox = (214,242,216,243)
-        if (self.RT_Params["gamma"]) :
-            self.gui_crop = Image.open("./image/gamma_off.png")
-            self.gui.paste(self.gui_crop, (214,242))
-        else :
-            self.gui_mock_crop = Image.open("./image/hardecg_on.png")
-            self.gui.paste(self.gui_mock_crop, (213,241))
-        self.gui.save("./image/updateGUI.png")
-
-    def update_EGG(self):
-        headbox = (271,241,273,244)
-        if (self.RT_Params["egg"]) :
-            self.gui_crop = Image.open("./image/egg_off.png")
-            self.gui.paste(self.gui_crop, (271,241))
-        else :
-            self.gui_mock_crop = Image.open("./image/hardecg_on.png")
-            self.gui.paste(self.gui_mock_crop, (269,240))
-        self.gui.save("./image/updateGUI.png")
-    
-    def update_EMG(self):
-        headbox = (328,242,330,244)
-        if (self.RT_Params["emg"]) :
-            self.gui_crop = Image.open("./image/emg_off.png")
-            self.gui.paste(self.gui_crop, (328,242))
-        else :
-            self.gui_mock_crop = Image.open("./image/hardecg_on.png")
-            self.gui.paste(self.gui_mock_crop, (327,241))
-        self.gui.save("./image/updateGUI.png")
-        
-    def update_SoftECG(self):
-        headbox = (384,242,386,244)
-        if (self.RT_Params["softecg"]) :
-            self.gui_crop = Image.open("./image/softecg_off.png")
-            self.gui.paste(self.gui_crop, (384,242))
-        else :
-            self.gui_mock_crop = Image.open("./image/hardecg_on.png")
-            self.gui.paste(self.gui_mock_crop, (383,241))
-        self.gui.save("./image/updateGUI.png")
-        
-    def update_Manual(self):
-        headbox = (497,242,499,243)
-        if (self.RT_Params["manual"]) :
-            self.gui_crop = Image.open("./image/manual_off.png")
-            self.gui.paste(self.gui_crop, (497,242))
-        else :
-            self.gui_mock_crop = Image.open("./image/hardecg_on.png")
-            self.gui.paste(self.gui_mock_crop, (496,241))
-        self.gui.save("./image/updateGUI.png")
-        
 
     def update_Synth(self):
-        headbox = (497,242,499,243)
         print(self.v.get())
+    
+    def update_Presets(self):
+        print(self.vp.get())
 
         
     def update_lcf(self, val):
