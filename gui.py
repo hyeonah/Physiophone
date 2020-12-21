@@ -19,7 +19,7 @@ class App(tkinter.Tk):
     def __init__(self):
         
         self.RT_Params = {
-            "Synth" : [("sin",False),("pinknoise",False)],
+            "Synth" : {"sin" : False, "pinknoise" : False},
             "LCF" : 1,
             "HCF" : 120,
             "NTC" : 60,
@@ -238,6 +238,7 @@ class App(tkinter.Tk):
                 self.RT_Params["manual"] = False
             else :
                 self.RT_Params["manual"] = True
+        
                 
         self.update_Boot()
         self.update_Record()
