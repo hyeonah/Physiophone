@@ -37,10 +37,6 @@ class App(tkinter.Tk):
         }
         
         self.init_GUI()
-        
-        self.gui_init = ImageTk.PhotoImage(self.gui_init)
-        self.canvas.create_image(544,804, anchor= tkinter.SE, image=self.gui_init)
-        self.canvas.pack()
   
     def start(self):
         try :
@@ -78,54 +74,46 @@ class App(tkinter.Tk):
         self.canvas.bind('<Button-1>', self.callback)
         self.canvas.pack()
         
-        #sin
+        self.init_Synth()
+        self.init_Presets()
+        self.init_Filtering()
+        self.init_Modulation()
+        self.init_Scale()
+        
+        self.gui_init = ImageTk.PhotoImage(self.gui_init)
+        self.canvas.create_image(544,804, anchor= tkinter.SE, image=self.gui_init)
+        self.canvas.pack()
+    
+    def init_Synth(self) :
         self.v = tk.IntVar()
         self.sin = tk.Radiobutton(self, variable = self.v, value= self.RT_Params["Synth"].get("sin"), bg = "black", command = self.update_Synth)
-        self.canvas.create_window(390,60, window = self.sin)
-
-        #pink
         self.pink = tk.Radiobutton(self, variable = self.v, value=self.RT_Params["Synth"].get("pinknoise"), bg = "black", command = self.update_Synth)
+        self.canvas.create_window(390,60, window = self.sin)
         self.canvas.create_window(390,102, window = self.pink)
         
-    
-        #Presets
+    def init_Presets(self):
         self.vp = tk.IntVar()
         self.delta = tk.Radiobutton(self, variable = self.vp, value= self.RT_Params["Presets"].get("Delta"), bg = "black", command = self.update_Presets)
-        self.canvas.create_window(46,240, window = self.delta)
-
         self.alpha = tk.Radiobutton(self, variable = self.vp, value=self.RT_Params["Presets"].get("Alpha"), bg = "black", command = self.update_Presets)
-        self.canvas.create_window(105,240, window = self.alpha)
-        
         self.beta = tk.Radiobutton(self, variable = self.vp, value= self.RT_Params["Presets"].get("Beta"), bg = "black", command = self.update_Presets)
-        self.canvas.create_window(161,240, window = self.beta)
-
         self.gamma = tk.Radiobutton(self, variable = self.vp, value=self.RT_Params["Presets"].get("Gamma"), bg = "black", command = self.update_Presets)
-        self.canvas.create_window(220,240, window = self.gamma)
-        
         self.egg = tk.Radiobutton(self, variable = self.vp, value= self.RT_Params["Presets"].get("EGG"), bg = "black", command = self.update_Presets)
-        self.canvas.create_window(279,240, window = self.egg)
-
         self.emg = tk.Radiobutton(self, variable = self.vp, value=self.RT_Params["Presets"].get("EMG"), bg = "black", command = self.update_Presets)
-        self.canvas.create_window(335,240, window = self.emg)
-        
         self.softecg = tk.Radiobutton(self, variable = self.vp, value=self.RT_Params["Presets"].get("SoftECG"), bg = "black", command = self.update_Presets)
-        self.canvas.create_window(387,240, window = self.softecg)
-        
         self.hardecg = tk.Radiobutton(self, variable = self.vp, value= self.RT_Params["Presets"].get("HardECG"), bg = "black", command = self.update_Presets)
-        self.canvas.create_window(444,240, window = self.hardecg)
-
         self.manual = tk.Radiobutton(self, variable = self.vp, value=self.RT_Params["Presets"].get("Manual"), bg = "black", command = self.update_Presets)
+        
+        self.canvas.create_window(46,240, window = self.delta)
+        self.canvas.create_window(105,240, window = self.alpha)
+        self.canvas.create_window(161,240, window = self.beta)
+        self.canvas.create_window(220,240, window = self.gamma)
+        self.canvas.create_window(279,240, window = self.egg)
+        self.canvas.create_window(335,240, window = self.emg)
+        self.canvas.create_window(387,240, window = self.softecg)
+        self.canvas.create_window(444,240, window = self.hardecg)
         self.canvas.create_window(502,240, window = self.manual)
-        
-        
-        #synth
-#        v3 = tk.IntVar()
-#        for (text, value) in self.RT_Params["Synth"].items() :
-#            self.syn = tk.Radiobutton(self, variable = v3, value=value, bg = "black", command = self.update_Synth)
-#        self.canvas.create_window(300,200, window = self.syn)
-        
-        
-        #Filtering
+ 
+    def init_Filtering(self):
         var = tk.DoubleVar()
         
         self.LCF = tk.Scale(self, orient= tk.HORIZONTAL, length="420", bg="black", command = self.update_lcf)
@@ -139,8 +127,8 @@ class App(tkinter.Tk):
         self.canvas.create_window(320,395, window = self.NTC)
         self.canvas.create_window(320,357, window = self.HCF)
         self.canvas.create_window(320,320, window = self.LCF)
-        
-        
+    
+    def init_Modulation(self):
         #Modulation
         self.Exp = tk.Scale(self, from_=0, to=100, tickinterval=1, orient= tk.HORIZONTAL, length="420", bg="black", command = self.update_exp)
         self.Lin = tk.Scale(self, orient= tk.HORIZONTAL, length="420", bg="black", command = self.update_lin)
@@ -153,7 +141,8 @@ class App(tkinter.Tk):
         self.canvas.create_window(320,565, window = self.Add)
         self.canvas.create_window(320,527, window = self.Lin)
         self.canvas.create_window(320,500, window = self.Exp)
-        
+    
+    def init_Scale(self):
         #V-Scale
         self.V_Scale = tk.Scale(self, orient= tk.VERTICAL, length="120", bg="black")
         self.canvas.create_window(420,720, window = self.V_Scale)
@@ -166,7 +155,6 @@ class App(tkinter.Tk):
         self.Volume = tk.Scale(self, orient= tk.VERTICAL, length="90", bg="black")
         self.canvas.create_window(420,80, window = self.Volume)
     
-        
     def update_GUI(self) :
     
         self.gui = Image.open("./image/GUI.png")
@@ -202,7 +190,6 @@ class App(tkinter.Tk):
                 self.RT_Params["energy"] = False
             else :
                 self.RT_Params["energy"] = True
-        
         
         self.update_Boot()
         self.update_Record()
@@ -258,7 +245,6 @@ class App(tkinter.Tk):
     def update_Presets(self):
         print(self.vp.get())
 
-        
     def update_lcf(self, val):
         self.RT_Params["LCF"] = val
         self.LCF_Label['text'] = val
