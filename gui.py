@@ -114,23 +114,26 @@ class App(tkinter.Tk):
         self.canvas.bind('<Button-1>', self.callback)
         self.canvas.pack()
         
-#        root = ThemedTk()
-#        root.get_themes()
-#        root.set_theme("black")
-        
-        #self.scale.grid(row=2, column=10, pady=15, padx=30)
-        
-        #self.scale_frame = Frame(self)
+        #Filtering
         var = tk.DoubleVar()
-        self.LCF = tk.Scale(self, orient= tk.HORIZONTAL, length="420", variable = var, bg="black", fg = "white")
-        self.HCF = tk.Scale(self, orient= tk.HORIZONTAL, length="420", bg="black", fg = "white")
-        self.NTC = tk.Scale(self, orient= tk.HORIZONTAL, length="420", bg="black", fg = "white")
         
-        lcf = self.canvas.create_window(320,395, window = self.LCF)
-        self.canvas.pack()
+        self.LCF = tk.Scale(self, orient= tk.HORIZONTAL, length="420", variable = var, bg="black")
+        self.HCF = tk.Scale(self, orient= tk.HORIZONTAL, length="420", bg="black")
+        self.NTC = tk.Scale(self, orient= tk.HORIZONTAL, length="420", bg="black")
+        
+        ntc = self.canvas.create_window(320,395, window = self.NTC)
         hcf = self.canvas.create_window(320,360, window = self.HCF)
-        self.canvas.pack()
-        ntc = self.canvas.create_window(320,320, window = self.NTC)
+        lcf = self.canvas.create_window(320,320, window = self.LCF)
+        
+        
+        #Modulation
+        self.Exp = tk.Scale(self, orient= tk.HORIZONTAL, length="420", variable = var, bg="black")
+        self.Lin = tk.Scale(self, orient= tk.HORIZONTAL, length="420", bg="black")
+        self.Add = tk.Scale(self, orient= tk.HORIZONTAL, length="420", bg="black")
+        
+        add = self.canvas.create_window(320,565, window = self.Add)
+        lin = self.canvas.create_window(320,530, window = self.Lin)
+        exp = self.canvas.create_window(320,490, window = self.Exp)
 #
 #        selection = str(var.get())
 #        button = ttk.Button(self, text = selection, command=sel )
