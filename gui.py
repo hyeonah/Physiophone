@@ -18,14 +18,6 @@ from scipy.misc import imread
 
 class App(tkinter.Tk):
     def __init__(self):
-        # Depending on distro (i.e. Deepin), full path of static files may be required. That' s what next two lines are for.
-        # You can put the directory with this app wherever you want in your disk
-        # In elementary os and so in ubuntu comment the follwing
-        ##pathname = os.path.dirname(sys.argv[0])
-        ##os.chdir(pathname)
-        error_flag = 0
-        
-       
         
         self.RT_Params = {
             "Synth" : ["sim","pinknoise"],
@@ -57,46 +49,23 @@ class App(tkinter.Tk):
         
         self.init_GUI()
         
-        #sttk.Scrollbar(self).grid(row =1, column = 1)
-        
         self.gui_init = ImageTk.PhotoImage(self.gui_init)
         self.canvas.create_image(544,804, anchor= tkinter.SE, image=self.gui_init)
         self.canvas.pack()
-        
-        
-        #self = ThemedTk(theme="black")
-        #self.set_theme("black")
-#        self = ThemedTk(theme="black")
-        #self.root.get_themes()
-        #root.set_theme("arc")
-#
-#        rightframe = Frame(self.root)
-#        bottomframe = Frame(rightframe)
-#        bottomframe.pack()
-#
-#        self.scale4 = ttk.Scale(self, orient= tk.HORIZONTAL)
-#        self.scale4.grid(row=2, column=2, pady=15, padx=30)
-#
-#        self.canvas.create_window(160,400, window = self.scale4)
-        
-    
+  
+    def start(self):
+        try :
+            self.update_GUI()
+            #self.start_board()
+            #self.start_audio()
+            #self.modulate()
+        except :
+            self.stop()
 
-    # Error messages handling
-    def display_error_message(self,msg,flag):
-        messagebox.showerror("Error", msg)
-        if flag == 1:
-            self.destroy()
-            
-    def motion(self, event):
-        print("image clicked : (%s %s)" % (event.x, event.y))
-        return
-    
-    def leftclick(self, event):
-        x, y = event.widget.winfo_pointerxy()
-        print('{}, {}'.format(x,y))
-
-    def key(self, event):
-        print ("pressed", repr(event.char))
+    def stop(self) :
+        self.stop_board()
+        self.stop_audio()
+        self.stop_modulation()
         
     def init_GUI(self) :
     
@@ -427,21 +396,7 @@ class App(tkinter.Tk):
             self.gui.paste(self.gui_mock_crop, (496,241))
         self.gui.save("./image/updateGUI.png")
         
-    def start(self):
-        try :
-            self.update_GUI()
-            #self.start_board()
-            #self.start_audio()
-            #self.modulate()
-        except :
-            self.stop()
 
-    def stop(self) :
-        self.stop_board()
-        self.stop_audio()
-        self.stop_modulation()
-        
-        
 
     def callback(self, event):
         self.RT_Params["mouse_x"] = event.x
@@ -480,11 +435,14 @@ class App(tkinter.Tk):
         self.RT_Params["Add"] = val
         self.Add_Label['text'] = val
         self.Add_Label.place(x=66, y=555)
-        
-        
-    # When you click to exit, this function is called
-    def on_exit(self):
-        self.destroy()
+
+    def motion(self, event):
+        print("image clicked : (%s %s)" % (event.x, event.y))
+        return
+    
+    def key(self, event):
+        print ("pressed", repr(event.char))
+    
         
 if __name__ == '__main__':
     App().mainloop()
