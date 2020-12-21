@@ -19,7 +19,7 @@ class App(tkinter.Tk):
     def __init__(self):
         
         self.RT_Params = {
-            "Synth" : {"sin" : False, "pinknoise" : False},
+            "Synth" : {"sin" : 0, "pinknoise" : 1},
             "LCF" : 1,
             "HCF" : 120,
             "NTC" : 60,
@@ -88,6 +88,22 @@ class App(tkinter.Tk):
         self.canvas.bind('<Button-1>', self.callback)
         self.canvas.pack()
         
+#        #sin
+        self.v = tk.IntVar()
+        self.sin = tk.Radiobutton(self, variable = self.v, value= self.RT_Params["Synth"].get("sin"), bg = "black", command = self.update_Synth)
+        self.canvas.create_window(390,60, window = self.sin)
+#
+#        #pink
+        self.pink = tk.Radiobutton(self, variable = self.v, value=self.RT_Params["Synth"].get("pinknoise"), bg = "black", command = self.update_Synth)
+        self.canvas.create_window(390,102, window = self.pink)
+        
+        #synth
+#        v3 = tk.IntVar()
+#        for (text, value) in self.RT_Params["Synth"].items() :
+#            self.syn = tk.Radiobutton(self, variable = v3, value=value, bg = "black", command = self.update_Synth)
+#        self.canvas.create_window(300,200, window = self.syn)
+        
+        
         #Filtering
         var = tk.DoubleVar()
         
@@ -124,6 +140,10 @@ class App(tkinter.Tk):
         #T-Scale
         self.T_Scale = tk.Scale(self, orient= tk.VERTICAL, length="120", bg="black")
         self.canvas.create_window(490,720, window = self.T_Scale)
+        
+        #Volume
+        self.Volume = tk.Scale(self, orient= tk.VERTICAL, length="90", bg="black")
+        self.canvas.create_window(420,80, window = self.Volume)
     
         
     def update_GUI(self) :
@@ -161,20 +181,6 @@ class App(tkinter.Tk):
                 self.RT_Params["energy"] = False
             else :
                 self.RT_Params["energy"] = True
-        
-        #Sinusoidal
-        if( 256 <= mouse_x <= 388 and 44 <= mouse_y <= 75):
-            if (self.RT_Params["sinusoidal"]) :
-                self.RT_Params["sinusoidal"] = False
-            else :
-                self.RT_Params["sinusoidal"] = True
-
-        #Pink Noise
-        if( 257 <= mouse_x <= 386 and 92 <= mouse_y <= 125):
-            if (self.RT_Params["pinknoise"]) :
-                self.RT_Params["pinknoise"] = False
-            else :
-                self.RT_Params["pinknoise"] = True
         
         #Delta
         if( 26 <= mouse_x <= 66 and 173 <= mouse_y <= 249):
@@ -238,14 +244,11 @@ class App(tkinter.Tk):
                 self.RT_Params["manual"] = False
             else :
                 self.RT_Params["manual"] = True
-        
                 
         self.update_Boot()
         self.update_Record()
         self.update_Flip()
         self.update_Energy()
-        self.update_Sinusoidal()
-        self.update_Pinknoise()
         self.update_HardECG()
         self.update_Delta()
         self.update_Alpha()
@@ -410,7 +413,9 @@ class App(tkinter.Tk):
         self.gui.save("./image/updateGUI.png")
         
 
-
+    def update_Synth(self):
+        headbox = (497,242,499,243)
+        print(self.v.get())
 
         
     def update_lcf(self, val):
