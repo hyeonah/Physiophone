@@ -110,7 +110,7 @@ class App(tkinter.Tk):
         
         self.canvas.create_window(320,565, window = self.Add)
         self.canvas.create_window(320,527, window = self.Lin)
-        self.canvas.create_window(320,490, window = self.Exp)
+        self.canvas.create_window(320,500, window = self.Exp)
         
         #V-Scale
         self.V_Scale = tk.Scale(self, orient= tk.VERTICAL, length="120", bg="black")
