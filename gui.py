@@ -25,7 +25,7 @@ class App(tkinter.Tk):
         ##os.chdir(pathname)
         error_flag = 0
         
-        self.init_GUI()
+       
         
         self.RT_Params = {
             "Synth" : ["sim","pinknoise"],
@@ -55,6 +55,7 @@ class App(tkinter.Tk):
             "mouse_y" : 0,
         }
         
+        self.init_GUI()
         
         #sttk.Scrollbar(self).grid(row =1, column = 1)
         
@@ -117,31 +118,32 @@ class App(tkinter.Tk):
         #Filtering
         var = tk.DoubleVar()
         
-        self.LCF = tk.Scale(self, orient= tk.HORIZONTAL, length="420", variable = var, bg="black")
-        self.HCF = tk.Scale(self, orient= tk.HORIZONTAL, length="420", bg="black")
-        self.NTC = tk.Scale(self, orient= tk.HORIZONTAL, length="420", bg="black")
+        self.LCF = tk.Scale(self, orient= tk.HORIZONTAL, length="420", bg="black", command = self.update_lcf)
+        self.HCF = tk.Scale(self, orient= tk.HORIZONTAL, length="420", bg="black", command = self.update_hcf)
+        self.NTC = tk.Scale(self, orient= tk.HORIZONTAL, length="420", bg="black", command = self.update_ntc)
         
-        ntc = self.canvas.create_window(320,395, window = self.NTC)
-        hcf = self.canvas.create_window(320,360, window = self.HCF)
-        lcf = self.canvas.create_window(320,320, window = self.LCF)
+        self.LCF_Label = tk.Label(self, text= "0", bg = "black", fg="white")
+        self.HCF_Label = tk.Label(self, text= "0", bg = "black", fg="white")
+        self.NTC_Label = tk.Label(self, text= "0", bg = "black", fg="white")
+        
+        self.canvas.create_window(320,395, window = self.NTC)
+        self.canvas.create_window(320,360, window = self.HCF)
+        self.canvas.create_window(320,320, window = self.LCF)
         
         
         #Modulation
-        self.Exp = tk.Scale(self, orient= tk.HORIZONTAL, length="420", variable = var, bg="black")
-        self.Lin = tk.Scale(self, orient= tk.HORIZONTAL, length="420", bg="black")
-        self.Add = tk.Scale(self, orient= tk.HORIZONTAL, length="420", bg="black")
+        self.Exp = tk.Scale(self, orient= tk.HORIZONTAL, length="420", bg="black", command = self.update_exp)
+        self.Lin = tk.Scale(self, orient= tk.HORIZONTAL, length="420", bg="black", command = self.update_lin)
+        self.Add = tk.Scale(self, orient= tk.HORIZONTAL, length="420", bg="black", command = self.update_add)
         
-        add = self.canvas.create_window(320,565, window = self.Add)
-        lin = self.canvas.create_window(320,530, window = self.Lin)
-        exp = self.canvas.create_window(320,490, window = self.Exp)
-#
-#        selection = str(var.get())
-#        button = ttk.Button(self, text = selection, command=sel )
-#        button.pack()
-#        #elf.canvas.scale("all, ")
-
+        self.Exp_Label = tk.Label(self, text= "0", bg = "black", fg="white")
+        self.Lin_Label = tk.Label(self, text= "0", bg = "black", fg="white")
+        self.Add_Label = tk.Label(self, text= "0", bg = "black", fg="white")
         
-        #self.canvas.pack()
+        self.canvas.create_window(320,565, window = self.Add)
+        self.canvas.create_window(320,530, window = self.Lin)
+        self.canvas.create_window(320,490, window = self.Exp)
+    
         
     def update_GUI(self) :
     
@@ -447,18 +449,38 @@ class App(tkinter.Tk):
         self.update_GUI()
         
         print ("clicked at", event.x, event.y)
-       
         
-#    def move_window(self,event):
-#        global img
-#        cx, cy = event2canvas(event, self.canvas)
-#        x,y,wh = (int(cx),int(cy),100)
-#        window_data = self.foreground_image_data[y:y+wh,x:x+wh]
-#        bg_img = self.background_image_data.copy()
-#        bg_img[y:y+wh,x:x+wh] = window_data
-#        img = ImageTk.PhotoImage(PIL.Image.fromarray(bg_img))
-#        self.canvas.create_image(0, 0,image=img,anchor="nw")
-    
+    def update_lcf(self, val):
+        self.RT_Params["LCF"] = val
+        self.LCF_Label['text'] = val
+        self.LCF_Label.place(x=66, y=320)
+        print (val)
+        
+    def update_hcf(self, val):
+        self.RT_Params["HCF"] = val
+        self.HCF_Label['text'] = val
+        self.HCF_Label.place(x=66, y=355)
+       
+    def update_ntc(self, val):
+        self.RT_Params["NTC"] = val
+        self.NTC_Label['text'] = val
+        self.NTC_Label.place(x=66, y=385)
+        
+    def update_exp(self, val):
+        self.RT_Params["Exp"] = val
+        self.Exp_Label['text'] = val
+        self.Exp_Label.place(x=66, y=490)
+        
+    def update_lin(self, val):
+        self.RT_Params["Lin"] = val
+        self.Lin_Label['text'] = val
+        self.Lin_Label.place(x=66, y=525)
+        
+    def update_add(self, val):
+        self.RT_Params["Add"] = val
+        self.Add_Label['text'] = val
+        self.Add_Label.place(x=66, y=555)
+        
         
     # When you click to exit, this function is called
     def on_exit(self):
