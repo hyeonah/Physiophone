@@ -114,22 +114,30 @@ class App(tkinter.Tk):
         self.canvas.bind('<Button-1>', self.callback)
         self.canvas.pack()
         
-        root = ThemedTk()
-        root.get_themes()
-        root.set_theme("black")
+#        root = ThemedTk()
+#        root.get_themes()
+#        root.set_theme("black")
         
         #self.scale.grid(row=2, column=10, pady=15, padx=30)
         
         #self.scale_frame = Frame(self)
         var = tk.DoubleVar()
-        self.scale = ttk.Scale(self, orient= tk.HORIZONTAL, length="420", variable = var)
+        self.LCF = tk.Scale(self, orient= tk.HORIZONTAL, length="420", variable = var, bg="black", fg = "white")
+        self.HCF = tk.Scale(self, orient= tk.HORIZONTAL, length="420", bg="black", fg = "white")
+        self.NTC = tk.Scale(self, orient= tk.HORIZONTAL, length="420", bg="black", fg = "white")
+        
+        lcf = self.canvas.create_window(320,395, window = self.LCF)
+        self.canvas.pack()
+        hcf = self.canvas.create_window(320,360, window = self.HCF)
+        self.canvas.pack()
+        ntc = self.canvas.create_window(320,320, window = self.NTC)
 #
 #        selection = str(var.get())
 #        button = ttk.Button(self, text = selection, command=sel )
 #        button.pack()
 #        #elf.canvas.scale("all, ")
 
-        self.canvas.create_window(320,400, window = self.scale)
+        
         #self.canvas.pack()
         
     def update_GUI(self) :
@@ -455,6 +463,7 @@ class App(tkinter.Tk):
         
 if __name__ == '__main__':
     App().mainloop()
+
 
 
 
