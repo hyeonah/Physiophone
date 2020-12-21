@@ -14,13 +14,12 @@ from tkinter import Frame, Label, Button, messagebox, Canvas
 from ttkthemes import ThemedTk
 import tkinter as tk
 import vlc                   # sudo pip3 install python-vlc
-from scipy.misc import imread
 
 class App(tkinter.Tk):
     def __init__(self):
         
         self.RT_Params = {
-            "Synth" : ["sim","pinknoise"],
+            "Synth" : [("sin",False),("pinknoise",False)],
             "LCF" : 1,
             "HCF" : 120,
             "NTC" : 60,
@@ -96,12 +95,12 @@ class App(tkinter.Tk):
         self.NTC_Label = tk.Label(self, text= "0", bg = "black", fg="white")
         
         self.canvas.create_window(320,395, window = self.NTC)
-        self.canvas.create_window(320,360, window = self.HCF)
+        self.canvas.create_window(320,357, window = self.HCF)
         self.canvas.create_window(320,320, window = self.LCF)
         
         
         #Modulation
-        self.Exp = tk.Scale(self, orient= tk.HORIZONTAL, length="420", bg="black", command = self.update_exp)
+        self.Exp = tk.Scale(self, from_=0, to=100, tickinterval=1, orient= tk.HORIZONTAL, length="420", bg="black", command = self.update_exp)
         self.Lin = tk.Scale(self, orient= tk.HORIZONTAL, length="420", bg="black", command = self.update_lin)
         self.Add = tk.Scale(self, orient= tk.HORIZONTAL, length="420", bg="black", command = self.update_add)
         
@@ -110,8 +109,16 @@ class App(tkinter.Tk):
         self.Add_Label = tk.Label(self, text= "0", bg = "black", fg="white")
         
         self.canvas.create_window(320,565, window = self.Add)
-        self.canvas.create_window(320,530, window = self.Lin)
+        self.canvas.create_window(320,527, window = self.Lin)
         self.canvas.create_window(320,490, window = self.Exp)
+        
+        #V-Scale
+        self.V_Scale = tk.Scale(self, orient= tk.VERTICAL, length="120", bg="black")
+        self.canvas.create_window(420,720, window = self.V_Scale)
+        
+        #T-Scale
+        self.T_Scale = tk.Scale(self, orient= tk.VERTICAL, length="120", bg="black")
+        self.canvas.create_window(490,720, window = self.T_Scale)
     
         
     def update_GUI(self) :
@@ -446,6 +453,7 @@ class App(tkinter.Tk):
         
 if __name__ == '__main__':
     App().mainloop()
+
 
 
 
