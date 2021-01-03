@@ -15,6 +15,15 @@ from ttkthemes import ThemedTk
 import tkinter as tk
 import vlc                   # sudo pip3 install python-vlc
 
+import brainflow
+import numpy as np
+from brainflow.board_shim import BoardShim, BrainFlowInputParams
+import time
+from scipy import signal
+import pyo as p
+import threading
+from ipywidgets import interact
+
 class App(tkinter.Tk):
     def __init__(self):
         
@@ -34,19 +43,24 @@ class App(tkinter.Tk):
             "energy" : True,
             "mouse_x" : 0,
             "mouse_y" : 0,
+            "fs" : 250,
+            "zi_bp" : None,
+            "zi_bs" : None,
+            "raw" : [],
+            "recording" : [],
         }
-        
+        self.buffer = np.array([0.0 for _ in range(1)])
         self.init_GUI()
   
     def start(self):
         try :
             self.update_GUI()
-            #self.start_board()
-            #self.start_audio()
-            #self.modulate()
+            board = self.start_board()
+            s, osc = self.start_audio()
+            modulate()
         except :
             self.stop()
-
+            
     def stop(self) :
         self.stop_board()
         self.stop_audio()
@@ -249,11 +263,13 @@ class App(tkinter.Tk):
         self.RT_Params["LCF"] = val
         self.LCF_Label['text'] = val
         self.LCF_Label.place(x=66, y=320)
+        self.filter_update(LCF = self.RT_Params["LCF"], HCF = self.RT_Params["HCF"], FS = 250)
         print (val)
         
     def update_hcf(self, val):
         self.RT_Params["HCF"] = val
         self.HCF_Label['text'] = val
+        self.filter_update(LCF = self.RT_Params["LCF"], HCF = self.RT_Params["HCF"], FS = 250)
         self.HCF_Label.place(x=66, y=355)
        
     def update_ntc(self, val):
@@ -283,9 +299,122 @@ class App(tkinter.Tk):
         self.RT_Params["mouse_x"] = event.x
         self.RT_Params["mouse_y"] = event.y
         self.update_GUI()
+
+    def start_board(self):
+        params = BrainFlowInputParams ()
+        params.serial_port = 'COM3'
+        board = BoardShim(0,params)
+        board.prepare_session ()
+        board.start_stream (2)
+        return board
         
+
+    def start_audio(self):
+        s = p.Server(nchnls=1, sr=150000, buffersize=1024).boot()
+        
+        # sinusoidal oscillator (uncomment the line below and comment out the lines below it)
+    #     osc = p.SineLoop(freq=1).out()
+
+        # filtered noise
+        n = p.PinkNoise()
+        osc = p.ButBP(n,q=10).out()
+        
+        
+        
+        #uncomment the lines below to record the audio in a wav file
+    #     s.recordOptions(dur=20, filename="./recording,wav", fileformat=0, sampletype=1)
+    #     s.recstart()
+
+        s.start()
+        return s,osc
+        
+    def run(self,x):
+        self.buffer = np.roll(self.buffer,-1)
+        self.buffer[-1] = x
+        y,z_bs = self.bandstop(60-3,60+3,self.buffer, self.fs, self.zi_bs)
+        self.zi_bs = z_bs
+        y,z_bp = self.bandpass(self.lcf,self.hcf,y, self.fs, self.zi_bp)
+        self.zi_bp = z_bp
+        return y[-1]
+    
+    def update(self, lcf=None, hcf=None, fs=None ):
+        if lcf:
+            self.lcf = lcf
+        if hcf:
+            self.hcf = hcf
+        if fs:
+            self.fs = fs
+    
+    def bandpass(self, start, stop, data, fs = 250, z=None):
+            bp_Hz = np.array([start, stop])
+            b, a = signal.butter(2, bp_Hz / (fs / 2.0), btype='bandpass')
+            if isinstance(z,np.ndarray):
+                zi = z
+            else:
+                zi = signal.lfilter_zi(b, a)
+            return signal.lfilter(b, a, data, zi =zi, axis=0)
+            
+    def bandstop(self, start, stop, data, fs = 250, z=None):
+            bp_Hz = np.array([start, stop])
+            b, a = signal.butter(2, bp_Hz / (fs / 2.0), btype='bandstop')
+            if isinstance(z,np.ndarray):
+                zi = z
+            else:
+                zi = signal.lfilter_zi(b, a)
+            return signal.lfilter(b, a, data, zi =zi, axis=0)
+            
+    # sonification parameters
+    a = 400
+    b = 400
+    c = 0
+    def param_update(self, A = a, B = b, C=c):
+        global a,b,c
+        a = A
+        b = B
+        c = C
+    #filter parameters
+    lcf=2
+    hcf=120
+    fs=250
+
+    def filter_update(self, LCF = lcf, HCF = hcf, FS = fs):
+        #global ff
+        self.update(lcf=LCF, hcf=HCF, fs=FS)
+        
+    def freq_update(self, r):
+        global a,b,c,q
+        f = float(self.run(r))
+        # uncomment the lines below to record the raw signal or the filtered signal (recording)
+    #     raw.append(r)
+    #     recording.append(f)
+        osc.freq = float(b * np.exp(min( f/a , 4 ))) + c
+
+    def stream(self):
+        global s,osc, board
+        
+        channel = 5 # the channel from which you are recording (N5P). Don't forget you need a bias channel too.
+        
+        cd=board.get_current_board_data(1)[channel][0]
+        try:
+            while True:
+                # whenever the value of the current board data is changed, update the frequency of the oscillator
+                ncd=board.get_current_board_data(1)[channel][0]
+                if ncd!=cd:
+                    cd = ncd
+                    freq_update(cd)
+
+        except KeyboardInterrupt:
+            print("Press Ctrl-C to terminate while statement")
+            s.stop()
+            
+    def modulate(self) :
+        # run to modulate the sound with the data from the board
+        st = threading.Thread(target=stream, daemon=True)
+        st.start()
+
 if __name__ == '__main__':
     App().mainloop()
+    StreamFilter(lcf=self.RT_Params["LCF"], hcf=self.RT_Params["HCF"], fs=250)
 
 
 
