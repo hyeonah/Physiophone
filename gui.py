@@ -24,6 +24,9 @@ import pyo as p
 import threading
 from ipywidgets import interact
 
+import matplotlib
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2Tk
+from matplotlib.figure import Figure
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 
@@ -58,8 +61,8 @@ class App(tkinter.Tk):
     def start(self):
         try :
             self.update_GUI()
-            board = self.start_board()
-            s, osc = self.start_audio()
+            self.board = self.start_board()
+            self.s, self.osc = self.start_audio()
             modulate()
         except :
             self.stop()
@@ -96,6 +99,9 @@ class App(tkinter.Tk):
         self.init_Filtering()
         self.init_Modulation()
         self.init_Scale()
+        
+        #graph
+        
         
         self.gui_init = ImageTk.PhotoImage(self.gui_init)
         self.canvas.create_image(544,804, anchor= tkinter.SE, image=self.gui_init)
@@ -306,10 +312,10 @@ class App(tkinter.Tk):
     def start_board(self):
         params = BrainFlowInputParams ()
         params.serial_port = 'COM3'
-        board = BoardShim(0,params)
-        board.prepare_session ()
-        board.start_stream (2)
-        return board
+        self.board = BoardShim(0,params)
+        self.board.prepare_session ()
+        self.board.start_stream (2)
+        return self.board
         
 
     def start_audio(self):
@@ -320,7 +326,7 @@ class App(tkinter.Tk):
 
         # filtered noise
         n = p.PinkNoise()
-        osc = p.ButBP(n,q=10).out()
+        self.osc = p.ButBP(n,q=10).out()
         
         
         
@@ -329,7 +335,7 @@ class App(tkinter.Tk):
     #     s.recstart()
 
         s.start()
-        return s,osc
+        return s,self.osc
         
     def run(self,x):
         self.buffer = np.roll(self.buffer,-1)
@@ -367,14 +373,15 @@ class App(tkinter.Tk):
             return signal.lfilter(b, a, data, zi =zi, axis=0)
             
     # sonification parameters
-    a = 400
-    b = 400
-    c = 0
+    self.a = 400
+    self.b = 400
+    self.c = 0
+    self.q = 10
+
     def param_update(self, A = a, B = b, C=c):
-        global a,b,c
-        a = A
-        b = B
-        c = C
+        self.a = A
+        self.b = B
+        self.c = C
     #filter parameters
     lcf=2
     hcf=120
@@ -385,35 +392,47 @@ class App(tkinter.Tk):
         self.update(lcf=LCF, hcf=HCF, fs=FS)
         
     def freq_update(self, r):
-        global a,b,c,q
         f = float(self.run(r))
         # uncomment the lines below to record the raw signal or the filtered signal (recording)
     #     raw.append(r)
     #     recording.append(f)
-        osc.freq = float(b * np.exp(min( f/a , 4 ))) + c
+        self.osc.freq = float(b * np.exp(min( f/a , 4 ))) + c
 
     def stream(self):
-        global s,osc, board
-        
         channel = 5 # the channel from which you are recording (N5P). Don't forget you need a bias channel too.
         
-        cd=board.get_current_board_data(1)[channel][0]
+        cd=self.board.get_current_board_data(1)[channel][0]
         try:
             while True:
                 # whenever the value of the current board data is changed, update the frequency of the oscillator
-                ncd=board.get_current_board_data(1)[channel][0]
+                ncd=self.board.get_current_board_data(1)[channel][0]
                 if ncd!=cd:
                     cd = ncd
-                    freq_update(cd)
+                    self.freq_update(cd)
 
         except KeyboardInterrupt:
             print("Press Ctrl-C to terminate while statement")
-            s.stop()
+            self.s.stop()
             
     def modulate(self) :
         # run to modulate the sound with the data from the board
         st = threading.Thread(target=stream, daemon=True)
         st.start()
+        
+            
+    def init_graph(self) :
+        #lf = tk.Label(self, text = 'Graph')
+        #lf.grid(row=0, column=0, sticky='nwes')
+        #self.fig = plt.figure()
+        #self.ax = plt.subplot(211, xlim=)
+        self.fig = Figure(figsize=(5,4), dpi=100)
+        self.a = self.fig.add_subplot(111)
+        
+        canvas = FigureCanvasTkAgg(fig, master=self)
+        canvas.get_tk_widget().pack(side=TOP, fill=BOTH, expand=1)
+            
+    def animate(self) :
+        
 
 if __name__ == '__main__':
     App().mainloop()
