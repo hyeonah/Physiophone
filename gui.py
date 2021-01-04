@@ -62,20 +62,22 @@ class App(tkinter.Tk):
         
         self.buffer = np.array([0.0 for _ in range(1)])
         self.init_GUI()
+        self.start()
   
     def start(self):
         try :
-            self.update_GUI()
+            #self.update_GUI()
             self.board = self.start_board()
             self.s, self.osc = self.start_audio()
             modulate()
         except :
-            self.stop()
+            return 0
+            #self.stop()
             
-    def stop(self) :
-        self.stop_board()
-        self.stop_audio()
-        self.stop_modulation()
+   # def stop(self) :
+   #     self.stop_board()
+   #     self.stop_audio()
+   #     self.stop_modulation()
         
     def update_params(self, key, value) :
         self.update_osc()
@@ -104,6 +106,7 @@ class App(tkinter.Tk):
         self.init_Filtering()
         self.init_Modulation()
         self.init_Scale()
+        #self.init_Graph()
         
         #graph
         
@@ -395,7 +398,7 @@ class App(tkinter.Tk):
         f = float(self.run(r))
         # uncomment the lines below to record the raw signal or the filtered signal (recording)
     #     raw.append(r)
-        recording.append(f)
+        self.RT_params["recording"].append(f)
         self.osc.freq = float(b * np.exp(min( f/a , 4 ))) + c
 
     def stream(self):
@@ -420,16 +423,13 @@ class App(tkinter.Tk):
         st.start()
         
             
-    def init_graph(self) :
-        #lf = tk.Label(self, text = 'Graph')
-        #lf.grid(row=0, column=0, sticky='nwes')
-        #self.fig = plt.figure()
-        #self.ax = plt.subplot(211, xlim=)
-        self.fig = Figure(figsize=(5,4), dpi=100)
-        self.a = self.fig.add_subplot(111)
+    #def init_Graph(self) :
+        #self.fig = Figure(figsize=(5,4), dpi=100)
+        #self.a = self.fig.add_subplot(111)
         
-        canvas = FigureCanvasTkAgg(fig, master=self)
-        canvas.get_tk_widget().pack(side=TOP, fill=BOTH, expand=1)
+        #canvas = FigureCanvasTkAgg(fig, master=self)
+        #canvas.get_tk_widget().pack(side=TOP, fill=BOTH, expand=1)
+        #plt.plot(self.RT_params["recording"])
             
     def animate(self) :
         self.y = self.osc.freq
