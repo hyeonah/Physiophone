@@ -54,7 +54,12 @@ class App(tkinter.Tk):
             "zi_bs" : None,
             "raw" : [],
             "recording" : [],
+            "a" : 400,
+            "b" : 400,
+            "c" : 0,
+            "q" : 10
         }
+        
         self.buffer = np.array([0.0 for _ in range(1)])
         self.init_GUI()
   
@@ -371,17 +376,12 @@ class App(tkinter.Tk):
             else:
                 zi = signal.lfilter_zi(b, a)
             return signal.lfilter(b, a, data, zi =zi, axis=0)
-            
-    # sonification parameters
-    self.a = 400
-    self.b = 400
-    self.c = 0
-    self.q = 10
 
-    def param_update(self, A = a, B = b, C=c):
+    def param_update(slef, A, B, C):
         self.a = A
         self.b = B
         self.c = C
+    
     #filter parameters
     lcf=2
     hcf=120
@@ -395,7 +395,7 @@ class App(tkinter.Tk):
         f = float(self.run(r))
         # uncomment the lines below to record the raw signal or the filtered signal (recording)
     #     raw.append(r)
-    #     recording.append(f)
+        recording.append(f)
         self.osc.freq = float(b * np.exp(min( f/a , 4 ))) + c
 
     def stream(self):
@@ -432,11 +432,12 @@ class App(tkinter.Tk):
         canvas.get_tk_widget().pack(side=TOP, fill=BOTH, expand=1)
             
     def animate(self) :
+        self.y = self.osc.freq
         
 
 if __name__ == '__main__':
     App().mainloop()
-    StreamFilter(lcf=self.RT_Params["LCF"], hcf=self.RT_Params["HCF"], fs=250)
+    #StreamFilter(lcf=self.RT_Params["LCF"], hcf=self.RT_Params["HCF"], fs=250)
 
 
 
