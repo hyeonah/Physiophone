@@ -24,6 +24,9 @@ import pyo as p
 import threading
 from ipywidgets import interact
 
+import matplotlib.pyplot as plt
+import matplotlib.animation as animation
+
 class App(tkinter.Tk):
     def __init__(self):
         
