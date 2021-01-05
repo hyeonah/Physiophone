@@ -29,6 +29,7 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolb
 from matplotlib.figure import Figure
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
+import random
 
 class App(tkinter.Tk):
     def __init__(self):
@@ -62,6 +63,7 @@ class App(tkinter.Tk):
         
         self.buffer = np.array([0.0 for _ in range(1)])
         self.init_GUI()
+        self.init_Graph()
         self.start()
   
     def start(self):
@@ -69,6 +71,7 @@ class App(tkinter.Tk):
             #self.update_GUI()
             self.board = self.start_board()
             self.s, self.osc = self.start_audio()
+            #self.init_Graph()
             modulate()
         except :
             return 0
@@ -423,21 +426,41 @@ class App(tkinter.Tk):
         st.start()
         
             
-    #def init_Graph(self) :
-        #self.fig = Figure(figsize=(5,4), dpi=100)
-        #self.a = self.fig.add_subplot(111)
+    def init_Graph(self) :
+        self.fig = plt.figure()
+        self.ax = plt.subplot(211, xlim=(0,50), ylim=(0,1024))
         
-        #canvas = FigureCanvasTkAgg(fig, master=self)
-        #canvas.get_tk_widget().pack(side=TOP, fill=BOTH, expand=1)
+        max_points = 50
+        self.line, = self.ax.plot(np.arange(max_points), np.ones(max_points, dtype=np.float)*np.nan, lw=1, c='blue', ms=1)
+        
+        self.draw_Graph()
+        self.update_animate()
+
         #plt.plot(self.RT_params["recording"])
+    
+    def init_line(self) :
+        return self.line
             
-    def animate(self) :
-        self.y = self.osc.freq
+    def animate(self, i) :
+        self.y = random.randint(0,1024)
+        self.old_y = self.line.get_ydata()
+        self.new_y = np.r_[self.old_y[1:], self.y]
+        self.line.set_ydata(self.new_y)
+        print(self.new_y)
+        return self.line
+    
+    def update_animate(self) :
+        anim = animation.FuncAnimation(self.fig, self.animate, init_func = self.init_line, frames=200, interval = 50, blit=False)
+        plt.show(block=False)
+    
+    def draw_Graph(self) :
+        self.draw = tk.Label(self, text="label")
+        self.canvas = FigureCanvasTkAgg(self.fig, master=self)
+        self.canvas.get_tk_widget()
         
 
 if __name__ == '__main__':
     App().mainloop()
-    #StreamFilter(lcf=self.RT_Params["LCF"], hcf=self.RT_Params["HCF"], fs=250)
 
 
 
