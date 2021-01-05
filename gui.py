@@ -434,7 +434,6 @@ class App(tkinter.Tk):
         self.line, = self.ax.plot(np.arange(max_points), np.ones(max_points, dtype=np.float)*np.nan, lw=1, c='blue', ms=1)
         
         self.draw_Graph()
-        self.update_animate()
 
         #plt.plot(self.RT_params["recording"])
     
@@ -449,14 +448,20 @@ class App(tkinter.Tk):
         print(self.new_y)
         return self.line
     
-    def update_animate(self) :
+    def draw_Graph(self) :
+        #self.draw = tk.Label(self, text="label")
+        self.graph_Label = tk.Label(self, bg = "black", fg="white")
+        
+        self.canvas3 = FigureCanvasTkAgg(self.fig, master=self)
+        
+        #self.canvas3.show()
+        #self.canvas.create_window(0,5, window = self.canvas3)
+        self.canvas3.get_tk_widget().pack()
+        
         anim = animation.FuncAnimation(self.fig, self.animate, init_func = self.init_line, frames=200, interval = 50, blit=False)
         plt.show(block=False)
-    
-    def draw_Graph(self) :
-        self.draw = tk.Label(self, text="label")
-        self.canvas = FigureCanvasTkAgg(self.fig, master=self)
-        self.canvas.get_tk_widget()
+        
+        
         
 
 if __name__ == '__main__':
