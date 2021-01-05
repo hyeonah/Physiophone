@@ -63,8 +63,6 @@ class App(tkinter.Tk):
         
         self.buffer = np.array([0.0 for _ in range(1)])
         self.init_GUI()
-        self.init_Graph()
-        self.start()
   
     def start(self):
         try :
@@ -241,6 +239,8 @@ class App(tkinter.Tk):
         else :
             self.gui_mock_crop = Image.open("./image/boot_on.png")
             self.gui.paste(self.gui_mock_crop, (479,19))
+            self.start()
+            self.init_Graph()
         self.gui.save("./image/updateGUI.png")
         
     def update_Record(self) :
@@ -453,7 +453,7 @@ class App(tkinter.Tk):
         self.old_y = self.line.get_ydata()
         self.new_y = np.r_[self.old_y[1:], self.y]
         self.line.set_ydata(self.new_y)
-        print(self.new_y)
+        #print(self.new_y)
         return self.line
     
 if __name__ == '__main__':
