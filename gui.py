@@ -427,11 +427,13 @@ class App(tkinter.Tk):
         
             
     def init_Graph(self) :
-        self.fig = plt.figure()
-        self.ax = plt.subplot(211, xlim=(0,50), ylim=(0,1024))
+        self.fig = plt.figure(figsize=(3.6,1.4), dpi=100, facecolor='black')
+        self.ax = plt.subplot(111, xlim=(0,50), ylim=(0,1024), facecolor ='black')
+        self.ax.xaxis.set_visible(False)
+        self.ax.yaxis.set_visible(False)
         
         max_points = 50
-        self.line, = self.ax.plot(np.arange(max_points), np.ones(max_points, dtype=np.float)*np.nan, lw=1, c='blue', ms=1)
+        self.line, = self.ax.plot(np.arange(max_points), np.ones(max_points, dtype=np.float)*np.nan, lw=1, c='yellow', ms=1)
         
         self.draw_Graph()
 
@@ -454,9 +456,15 @@ class App(tkinter.Tk):
         
         self.canvas3 = FigureCanvasTkAgg(self.fig, master=self)
         
-        #self.canvas3.show()
-        #self.canvas.create_window(0,5, window = self.canvas3)
-        self.canvas3.get_tk_widget().pack()
+        self.canvas3.draw()
+        
+        self.canvas3.get_tk_widget().place(relx=0.05, rely=0.8)
+        
+        #self.toolbar = NavigationToolbar2Tk(self.canvas3, self)
+        #self.toolbar.update()
+        #self.canvas3.get_tk_widget().pack(side=tk.TOP)
+        #self.canvas.create_window(490,720, window = self.canvas3)
+    
         
         anim = animation.FuncAnimation(self.fig, self.animate, init_func = self.init_line, frames=200, interval = 50, blit=False)
         plt.show(block=False)
