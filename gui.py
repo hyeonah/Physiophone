@@ -66,24 +66,22 @@ class App(tkinter.Tk):
   
     def start(self):
         try :
-            #self.update_GUI()
             self.board = self.start_board()
+        except :
+            print("not connected to board")
+        try :
             self.s, self.osc = self.start_audio()
-            #self.init_Graph()
+        except :
+            print("can't start audio")
+        try :
             modulate()
         except :
-            return 0
-            #self.stop()
+            print("can't start modulate")
             
    # def stop(self) :
    #     self.stop_board()
    #     self.stop_audio()
    #     self.stop_modulation()
-        
-    def update_params(self, key, value) :
-        self.update_osc()
-        self.update_filter()
-        self.update_GUI()
         
     def init_GUI(self) :
     
@@ -187,6 +185,11 @@ class App(tkinter.Tk):
         self.Volume = tk.Scale(self, orient= tk.VERTICAL, length="90", bg="black")
         self.canvas.create_window(420,80, window = self.Volume)
     
+    def update_params(self, key, value) :
+        self.update_GUI()
+        self.update_osc()
+        self.update_filter()
+        
     def update_GUI(self) :
     
         self.gui = Image.open("./image/GUI.png")
@@ -424,8 +427,8 @@ class App(tkinter.Tk):
         # run to modulate the sound with the data from the board
         st = threading.Thread(target=stream, daemon=True)
         st.start()
-        
-            
+    
+    # Visualization
     def init_Graph(self) :
         self.fig = plt.figure(figsize=(3.6,1.4), dpi=100, facecolor='black')
         self.ax = plt.subplot(111, xlim=(0,50), ylim=(0,1024), facecolor ='black')
@@ -441,7 +444,6 @@ class App(tkinter.Tk):
         return self.line
 
     def draw_Graph(self) :
-        #self.graph_Label = tk.Label(self, bg = "black", fg="white")
         self.canvas3 = FigureCanvasTkAgg(self.fig, master=self)
         self.canvas3.draw()
         self.canvas3.get_tk_widget().place(relx=0.05, rely=0.8)
@@ -449,11 +451,11 @@ class App(tkinter.Tk):
         plt.show(block=False)
             
     def animate(self, i) :
+        # change 'random.randint(0,1024)' to real data
         self.y = random.randint(0,1024)
         self.old_y = self.line.get_ydata()
         self.new_y = np.r_[self.old_y[1:], self.y]
         self.line.set_ydata(self.new_y)
-        #print(self.new_y)
         return self.line
     
 if __name__ == '__main__':
