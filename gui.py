@@ -13,7 +13,7 @@ from tkinter import Tk, RIGHT, LEFT, SOLID, ttk
 from tkinter import Frame, Label, Button, messagebox, Canvas
 from ttkthemes import ThemedTk
 import tkinter as tk
-import vlc                   # sudo pip3 install python-vlc
+#import vlc                   # sudo pip3 install python-vlc
 
 import brainflow
 import numpy as np
@@ -331,7 +331,6 @@ class App(tkinter.Tk):
         self.board.start_stream (2)
         return self.board
         
-
     def start_audio(self):
         s = p.Server(nchnls=1, sr=150000, buffersize=1024).boot()
         
@@ -392,9 +391,9 @@ class App(tkinter.Tk):
         self.c = C
     
     #filter parameters
-    lcf=2
-    hcf=120
-    fs=250
+    #lcf=2
+    #hcf=120
+    #fs=250
 
     def filter_update(self, LCF, HCF, FS):
         #global ff
