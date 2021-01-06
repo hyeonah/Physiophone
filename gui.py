@@ -354,19 +354,19 @@ class App(tkinter.Tk):
     def run(self,x):
         self.buffer = np.roll(self.buffer,-1)
         self.buffer[-1] = x
-        y,z_bs = self.bandstop(60-3,60+3,self.buffer, self.fs, self.zi_bs)
-        self.zi_bs = z_bs
-        y,z_bp = self.bandpass(self.lcf,self.hcf,y, self.fs, self.zi_bp)
-        self.zi_bp = z_bp
+        self.y, self.z_bs = self.bandstop(60-3,60+3, self.buffer, self.RT_Params["fs"], self.RT_Parmas["zi_bs"])
+        self.RT_Parmas["zi_bs"] = self.z_bs
+        self.y, self.z_bp = self.bandpass(self.RT_Params["LCF"], self.RT_Params["HCF"], self.y, self.RT_Params["fs"], self.RT_Params["zi_bp"])
+        self.RT_Params["zi_bp"] = z_bp
         return y[-1]
     
     def update(self, lcf=None, hcf=None, fs=None ):
         if lcf:
-            self.lcf = lcf
+            self.RT_Params["LCF"] = lcf
         if hcf:
-            self.hcf = hcf
+            self.RT_Params["HCF"] = hcf
         if fs:
-            self.fs = fs
+            self.RT_Params["fs"] = fs
     
     def bandpass(self, start, stop, data, fs = 250, z=None):
             bp_Hz = np.array([start, stop])
@@ -396,9 +396,9 @@ class App(tkinter.Tk):
     hcf=120
     fs=250
 
-    def filter_update(self, LCF = lcf, HCF = hcf, FS = fs):
+    def filter_update(self, LCF, HCF, FS):
         #global ff
-        self.update(lcf=LCF, hcf=HCF, fs=FS)
+        self.update(lcf=self.RT_Params["LCF"], hcf=self.RT_Params["HCF"], fs=self.RT_Params["fs"])
         
     def freq_update(self, r):
         f = float(self.run(r))
